@@ -1,0 +1,2 @@
+Si que compila y saldrá por pantalla la marca,color,tipo y velocidad del m1 y del c2 y además el tipo del v1 
+aunque el parametro t este al final deL constructor como el super si que esta en la primera línea funcionará

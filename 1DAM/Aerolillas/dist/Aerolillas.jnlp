@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Aerolillas.jnlp">
+  <information>
+    <title>Aerolillas</title>
+    <vendor>Carlos Nicolae</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Aerolillas.jar" size="865991" download="eager" />
+    <jar href="lib\api.jar" size="8341" download="eager" />
+    <jar href="lib\commons-codec-1.16.1.jar" size="365463" download="eager" />
+    <jar href="lib\postgresql-42.5.0.jar" size="1046274" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Aerolillas" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="aerolillas.Aerolillas"  name="Aerolillas" />
+  <update check="always"/>
+</jnlp>

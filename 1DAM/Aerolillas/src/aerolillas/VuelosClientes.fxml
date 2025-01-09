@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="820.0" prefWidth="1432.0" styleClass="fondo" stylesheets="styles/estilo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="aerolillas.FXMLDocumentController">
+   <children>
+      <Button fx:id="botonLogin1" layoutX="630.0" layoutY="665.0" mnemonicParsing="false" onAction="#goToScreenLogin1" prefHeight="60.0" prefWidth="173.0" text="Comprar">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <Button fx:id="botonAnterior1" layoutX="44.0" layoutY="43.0" mnemonicParsing="false" onAction="#goToScreenAnterior1" text="&lt;">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
+      <Label layoutX="602.0" layoutY="60.0" />
+      <Label layoutX="579.0" layoutY="28.0" text="VUELOS">
+         <font>
+            <Font size="77.0" />
+         </font>
+      </Label>
+      <ListView fx:id="vuelosListView" layoutX="177.0" layoutY="368.0" prefHeight="242.0" prefWidth="1084.0" />
+      <Button fx:id="botonmilagroso" layoutX="177.0" layoutY="297.0" mnemonicParsing="false" onAction="#vuelosDisponibles" prefHeight="50.0" prefWidth="202.0" text="ver vuelos">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

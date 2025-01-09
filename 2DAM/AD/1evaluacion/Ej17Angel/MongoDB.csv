@@ -1,0 +1,8 @@
+id_pedido;id_cliente;id_producto;nombre;fabricante;cantidad
+1;1233;1;Pentium IV;Intel;1
+1;1233;2;Tablet 8 pulgadas;null;1
+2;8545;77;Impresora HP;HP;3
+3;7854;7;Impresora ;Epson;3
+3;7854;45;Pantalla ;Sony;1
+3;7854;745;Cable HDMI ;Apple;5
+4;2356;79;Escaner;Canon;1

@@ -1,0 +1,1 @@
+No, porque getCurso() no esta en Persona

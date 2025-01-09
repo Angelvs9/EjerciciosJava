@@ -1,0 +1,72 @@
+﻿[
+  {	
+    "id_pedido":1,
+    "id_cliente":1233,
+    "productos":
+            [    
+                {
+                    "id_producto":1, 
+                    "nombre":"Pentium IV", 
+                    "fabricante":"Intel", 
+                    "cantidad":1
+                },
+                {
+                    "id_producto":2, 
+                    "nombre":"Tablet 8 pulgadas", 
+                    "cantidad":1
+                }
+            ]
+  } ,
+  {
+    "id_pedido": 2,
+    "id_cliente":8545,
+    "productos":
+        [    
+            {
+                "id_producto":77, 
+                "nombre":"Impresora HP", 
+                "fabricante":"HP", 
+                "cantidad":3
+            }                
+        ]
+  } ,
+  {
+    "id_pedido": 3,
+    "id_cliente":7854,
+    "productos":
+        [    
+            {
+                "id_producto":7, 
+                "nombre":"Impresora ", 
+                "fabricante":"Epson", 
+                "cantidad":3
+            },
+            {
+                "id_producto":45, 
+                "nombre":"Pantalla ", 
+                "fabricante":"Sony", 
+                "cantidad":1
+            },
+            {
+                "id_producto":745, 
+                "nombre":"Cable HDMI ", 
+                "fabricante":"Apple", 
+                "cantidad":5
+            }
+
+        ]
+  } ,
+  {
+    "id_pedido": 4,
+    "id_cliente":2356,
+    "productos":
+        [    
+            {
+                "id_producto":79, 
+                "nombre":"Escaner", 
+                "fabricante":"Canon", 
+                "cantidad":1
+            }                
+        ]
+  }
+]    
