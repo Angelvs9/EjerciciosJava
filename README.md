@@ -1,3 +1,3 @@
 # EjerciciosJava
 > [!NOTE]
-> REPOSITORIO DE Ejercicios DE JAVA
+> REPOSITORIO DE EJERCICIOS DE JAVA
