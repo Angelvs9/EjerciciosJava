@@ -18,11 +18,9 @@ import java.util.logging.Logger;
 public class Metodos {
     
     public static void crearBD(Connection gestor,String bd){
-        
+        boolean temp=true;
         try {
             Statement stmt=gestor.createStatement();
-            String use="USE ferreteria";
-            boolean useUsado=false;
             
             File f=new File(bd);
             BufferedReader br=new BufferedReader(new FileReader(f));
@@ -30,20 +28,18 @@ public class Metodos {
             String consulta="";
             while((linea=br.readLine())!=null){
                 
-                
                 if (linea!=" " && !linea.startsWith("--")) {
                     consulta+=linea;
                 }
 
                 if (consulta.endsWith(";")) {
-                    
-                    if (!useUsado) {
-                       stmt.execute(use);
-                       useUsado=true;
-                        System.out.println("se crea chilling");
-                    }
                     System.out.println("se ejecuta esto: "+consulta+"\n");
                     stmt.execute(consulta);
+                    if (temp) {
+                        //se ejecuta solo una vez el use 
+                        use(gestor);
+                        temp=false;
+                    }
                     consulta="";
                     
                 }
@@ -61,6 +57,22 @@ public class Metodos {
         }
     
     }
+    
+    public static void use(Connection gestor){
+        try {
+            Statement stmt=gestor.createStatement();
+            String use="USE ferreteria";
+            stmt.execute(use);
+            stmt.close();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
     
     
 }
