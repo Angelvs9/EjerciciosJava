@@ -17,8 +17,9 @@ import java.util.logging.Logger;
  */
 public class Metodos {
     
-    public static void crearBD(Connection gestor,String bd){
-        boolean temp=true;
+    public static boolean crearBD(Connection gestor,String bd){
+        boolean temp=true;//para ejecutar el use una vez solo cuando ya se ha creado la bd
+        boolean todoCorrecto=false;
         try {
             Statement stmt=gestor.createStatement();
             
@@ -33,7 +34,6 @@ public class Metodos {
                 }
 
                 if (consulta.endsWith(";")) {
-                    System.out.println("se ejecuta esto: "+consulta+"\n");
                     stmt.execute(consulta);
                     if (temp) {
                         //se ejecuta solo una vez el use 
@@ -41,7 +41,8 @@ public class Metodos {
                         temp=false;
                     }
                     consulta="";
-                    
+                    //se supone que si ya has ejecutado 1 consulta el resto es igual
+                    todoCorrecto=true;
                 }
             }
                 
@@ -55,7 +56,7 @@ public class Metodos {
         } catch (IOException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
+        return todoCorrecto;
     }
     
     public static void use(Connection gestor){
@@ -71,6 +72,43 @@ public class Metodos {
         }
         
     }
+    
+    public static boolean insertarDatosBD(Connection gestor,String datosbd){
+        boolean insertado=false;
+        try {
+            
+            Statement stmt=gestor.createStatement();
+            use(gestor);
+            File f=new File(datosbd);
+            BufferedReader br=new BufferedReader(new FileReader(f));
+            String linea="";
+            String consulta="";
+            while((linea=br.readLine())!=null){
+                
+                if (linea!=" " && !linea.startsWith("--")) {
+                    consulta+=linea;
+                }
+
+                if (consulta.endsWith(";")) {
+
+                    stmt.execute(consulta);
+                    consulta="";
+                    //se supone que si ya has ejecutado 1 consulta el resto es igual
+                    insertado=true;
+                }
+            }
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return insertado;
+    }
+    
+    
     
     
     
