@@ -97,7 +97,8 @@ public class Metodos {
                     insertado=true;
                 }
             }
-           
+           br.close();
+           stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
