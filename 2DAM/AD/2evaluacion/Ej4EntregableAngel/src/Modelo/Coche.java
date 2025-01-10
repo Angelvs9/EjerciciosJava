@@ -46,7 +46,7 @@ public class Coche extends Vehiculo implements Serializable{
 
     @Override
     public String toString() {
-        return "Coche{" + "marca=" + marca + ", modelo=" + modelo + ", matricula=" + matricula + '}';
+        return super.toString()+" Coche{" + "marca=" + marca + ", modelo=" + modelo + ", matricula=" + matricula + '}';
     }
     
     

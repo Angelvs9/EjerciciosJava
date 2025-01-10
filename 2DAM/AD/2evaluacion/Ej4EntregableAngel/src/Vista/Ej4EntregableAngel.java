@@ -1,12 +1,15 @@
 
 package Vista;
 
+import BBDD.Metodos;
 import static BBDD.Metodos.crearBD;
 import static BBDD.Metodos.insertarObjeto;
+import static BBDD.Metodos.listarCoches;
 import BBDD.gestorConexion;
 import Modelo.Coche;
 import Modelo.Vehiculo;
 import java.sql.Connection;
+import java.util.List;
 
 /**
  *
@@ -57,8 +60,12 @@ public class Ej4EntregableAngel {
         } else {
             System.out.println("No se pudo insertar el coche con bastidor " + c4.getBastidor());
         }
-
-
+        System.out.println("______________________");
+        System.out.println("Coches");
+        List<Object> lista=listarCoches(g.getConn());
+        for (Object coche : lista) {
+           System.out.println(coche.toString()); 
+        }
 
         g.cerrar_Conexion();
     }

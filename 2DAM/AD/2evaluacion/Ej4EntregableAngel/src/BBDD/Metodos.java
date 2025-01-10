@@ -7,11 +7,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -100,6 +105,34 @@ public class Metodos {
        return insertado;
     }
     
+    
+    public static List<Object> listarCoches(Connection gestor){
+        use(gestor);
+        List <Object> temp=new ArrayList<>();
+        try {
+           Object dato=null;
+           PreparedStatement psta = gestor.prepareStatement("select coche from coche");
+           ResultSet rs = psta.executeQuery();
+           while (rs.next()) {
+               Blob blob = rs.getBlob("coche");
+               // Se reconstruye el objeto con un ObjectInputStream
+               ObjectInputStream ois = new ObjectInputStream(blob.getBinaryStream());
+               dato =  ois.readObject();
+               temp.add(dato);
+           }
+           psta.close();
+           rs.close();
+
+       } catch (SQLException ex) {
+           Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (IOException ex) {
+           Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       
+       return temp;
+    }
     
     
 }
