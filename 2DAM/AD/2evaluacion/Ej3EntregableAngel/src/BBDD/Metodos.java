@@ -30,6 +30,7 @@ public class Metodos {
             String consulta="";
             while((linea=br.readLine())!=null){
                 
+                
                 if (linea!=" " && !linea.startsWith("--")) {
                     consulta+=linea;
                 }
