@@ -86,11 +86,10 @@ public class Metodos {
     public static void use(Connection gestor){
         try {
             Statement stmt=gestor.createStatement();
-            String use="USE minferreteria";
+            String use="USE minferreteria;";
             stmt.execute(use);
             stmt.close();
-            
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,7 +100,7 @@ public class Metodos {
     //esto si vienen junto todo en el mismo archivo 
 
     public static boolean crearBD(Connection gestor,String bd){
-        boolean temp=true;//para ejecutar el use una vez solo cuando ya se ha creado la bd
+        
         boolean todoCorrecto=false;
         try {
             Statement stmt=gestor.createStatement();
@@ -118,11 +117,12 @@ public class Metodos {
 
                 if (consulta.endsWith(";")) {
                     stmt.execute(consulta);
-                    if (temp) {
+                    if (consulta.startsWith("CREATE DATABASE")) {
                         //se ejecuta solo una vez el use 
                         use(gestor);
-                        temp=false;
+
                     }
+                    
                     consulta="";
                     //se supone que si ya has ejecutado 1 consulta el resto es igual
                     todoCorrecto=true;

@@ -39,15 +39,17 @@ public class main {
             comprobacion.close();
             if (numero==0) {
                 crearBD(gestor.getConn(),"BBDD.sql");
+                
+                
             }
             System.out.println("bd creada");
-            use(gestor.getConn());
+            
             Statement stmt = gestor.getConn().createStatement();
             
             
             
             
-            
+            use(gestor.getConn());
             ResultSet rs = stmt.executeQuery("SELECT MAX(ncodigo) FROM clientes");
             int n=0;
             if (rs.next()) {
