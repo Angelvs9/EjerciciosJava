@@ -6,6 +6,7 @@ import BBDD.gestorConexion;
 import static BBDD.Metodos.crearBD;
 import static BBDD.Metodos.subirFoto;
 import static BBDD.Metodos.descargarFoto;
+import static BBDD.Metodos.use;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,11 +23,31 @@ public class main {
 
     public static void main(String[] args) {
     gestorConexion gestor=new gestorConexion();
+    boolean creada=false;
         try {
+            Statement comprobacion = gestor.getConn().createStatement();
+            String query = "SELECT COUNT(*) > 0 AS database_exists FROM information_schema.schemata WHERE schema_name = 'minferreteria';";
+            ResultSet comprobacionRs = comprobacion.executeQuery(query);
+            int numero=0;
+            if (comprobacionRs.next()) {
+                numero = comprobacionRs.getInt("database_exists");
+            }
+            comprobacionRs.close();
+            comprobacion.close();
             
-            crearBD(gestor.getConn(),"BBDD.sql");
+            
+            comprobacion.close();
+            if (numero==0) {
+                crearBD(gestor.getConn(),"BBDD.sql");
+            }
             System.out.println("bd creada");
+            use(gestor.getConn());
             Statement stmt = gestor.getConn().createStatement();
+            
+            
+            
+            
+            
             ResultSet rs = stmt.executeQuery("SELECT MAX(ncodigo) FROM clientes");
             int n=0;
             if (rs.next()) {
