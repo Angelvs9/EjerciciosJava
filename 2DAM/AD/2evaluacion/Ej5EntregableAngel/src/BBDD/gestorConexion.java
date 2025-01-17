@@ -14,12 +14,9 @@ import java.util.logging.Logger;
 public class gestorConexion {
     Connection conn;
 
-    public gestorConexion(String u) {
+    public gestorConexion(String u,String user,String password) {
         try {
-            String url=u;
-            String user="postgres";
-            String password="";
-            conn=DriverManager.getConnection(url,user,password);
+            conn=DriverManager.getConnection(u,user,password);
             if (conn!=null) {
                 //bien
             }

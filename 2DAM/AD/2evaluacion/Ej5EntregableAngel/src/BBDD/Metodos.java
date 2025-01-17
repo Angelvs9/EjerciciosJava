@@ -36,12 +36,8 @@ public class Metodos {
                     consulta+=linea;
                     if (consulta.endsWith(";")) {
                         sta.execute(consulta);
-                        if (temp) {
-                        //se ejecuta solo una vez el use 
-                            use(gestor);
-                            temp=false;
-                        }
                         consulta="";
+                        temp=true;
                     }
                 }
                 
@@ -60,19 +56,6 @@ public class Metodos {
     }
     
     
-    public static void use(Connection gestor){
-        try {
-            Statement stmt=gestor.createStatement();
-            String use="USE vehiculos";
-            stmt.execute(use);
-            stmt.close();
-            
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
     
     
 }
