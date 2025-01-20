@@ -3,6 +3,7 @@ package Vista;
 import BBDD.Metodos;
 import static BBDD.Metodos.crearBaseDatos;
 import static BBDD.Metodos.traspasoADatosFiscales;
+import static BBDD.Metodos.traspasoPoblaciones;
 import BBDD.gestorConexion;
 
 /**
@@ -19,6 +20,10 @@ public class Ej5EntregableAngel {
         gestorConexion gestor=new gestorConexion("jdbc:mysql://localhost:3306/audiogil","root","");
         
         crearBaseDatos(gestor.getConn(), "audiogil.sql");
+        
+        if (traspasoPoblaciones(gestorPostgres.getConn(), gestor.getConn())) {
+            System.out.println("tabla poblaciones rellenada");
+        }
         
         if (traspasoADatosFiscales(gestorPostgres.getConn(), gestor.getConn())) {
             System.out.println("tabla datos_fiscales rellenada correctamente");

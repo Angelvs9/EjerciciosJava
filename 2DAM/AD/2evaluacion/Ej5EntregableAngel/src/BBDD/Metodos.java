@@ -6,6 +6,7 @@
 package BBDD;
 
 import Modelo.Dato_fiscal;
+import Modelo.Poblacion;
 import Vista.Ej5EntregableAngel;
 import java.io.BufferedReader;
 import java.io.File;
@@ -97,7 +98,37 @@ public class Metodos {
         }
         
     }
-    
+    public static boolean traspasoPoblaciones(Connection bdPostgres,Connection bdMySql){
+        boolean insertado=false;
+        try {
+            
+            String consulta="select codigo,nombre from poblaciones";
+            Statement staPostgres=bdPostgres.createStatement();
+            Statement staMySql=bdMySql.createStatement();
+            
+            List<Poblacion> poblacionesList = new ArrayList<>();
+            ResultSet rs=staPostgres.executeQuery(consulta);
+            while(rs.next()){
+                int codigo=rs.getInt("codigo");
+                String nombre=rs.getString("nombre");
+                
+                Poblacion poblacion=new Poblacion(codigo,nombre);
+                poblacionesList.add(poblacion);
+            }
+            
+            for(Poblacion p:poblacionesList){
+                String consultaInsert = "INSERT INTO poblaciones (codigo, nombre) VALUES (" + p.getCodigo() + ", '" + p.getNombre() + "')";
+                staMySql.executeUpdate(consultaInsert);
+                insertado=true;
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return insertado;
+    }
     
     
     public static boolean traspasoADatosFiscales(Connection bdPostgres,Connection bdMySql){
@@ -135,6 +166,7 @@ public class Metodos {
             }
             staPostgres.close();
             staMySql.close();
+            rs.close();
             
             
         } catch (SQLException ex) {
