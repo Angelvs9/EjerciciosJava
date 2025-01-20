@@ -5,6 +5,7 @@
  */
 package BBDD;
 
+import Modelo.Cliente;
 import Modelo.Dato_fiscal;
 import Modelo.Poblacion;
 import Vista.Ej5EntregableAngel;
@@ -127,6 +128,36 @@ public class Metodos {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        return insertado;
+    }
+    
+    public static boolean traspasoClientes(Connection bdPostgres,Connection bdMySql){
+        boolean insertado=false;
+        try {
+            String consulta="";
+            Statement staPostgres=bdPostgres.createStatement();
+            Statement staMySql=bdMySql.createStatement();
+            List<Poblacion> clientesList = new ArrayList<>();
+            
+            ResultSet rs=staPostgres.executeQuery(consulta);
+            while(rs.next()){
+                int codigo=rs.getInt("codigo");
+                String nombre=rs.getString("nombre");
+                
+                Poblacion poblacion=new Poblacion(codigo,nombre);
+                clientesList.add(poblacion);
+            }
+            
+            for(Cliente c:clientesList){
+                String consultaInsert = "INSERT INTO poblaciones (codigo, nombre) VALUES (" + c.getCodigo() + ", '" + c.getNombre() + "')";
+                staMySql.executeUpdate(consultaInsert);
+                insertado=true;
+            }
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return insertado;
     }
     
