@@ -26,7 +26,7 @@ public class Metodos {
     
     public static boolean crearBaseDatos(Connection gestor,String bd){
         boolean temp=false;
-        if (!ExisteBD(gestor, bd)) {
+        if (!ExisteBD(gestor, "audiogil")) {
             String linea="";
             String consulta="";
             File f=new File(bd);
@@ -63,14 +63,14 @@ public class Metodos {
         boolean existe=false;
         try {
             Statement sta=gestor.createStatement();
-            gestor.createStatement(); 
+
             String consulta = "SELECT COUNT(*) AS total FROM information_schema.schemata WHERE schema_name = '" + nombre + "'";
             ResultSet rs=sta.executeQuery(consulta);
             if (rs.next()) {
                 //si hay mas de 0 bd con ese nombre ya existe
                 if(rs.getInt("total")>0){
                     existe=true;
-                    System.out.println("a ver ");
+
                 }
             }
             rs.close();
@@ -78,7 +78,7 @@ public class Metodos {
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("no funciona de momento "+existe);
+
         return existe;
     }
     
