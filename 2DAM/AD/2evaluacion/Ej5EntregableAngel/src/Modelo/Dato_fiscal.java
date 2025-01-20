@@ -22,6 +22,16 @@ public class Dato_fiscal {
         this.ca = ca;
     }
 
+    public Dato_fiscal(String nif, String nombre, String apellidos, int cp, long ca) {
+        this.nif = nif;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.cp = cp;
+        this.ca = ca;
+    }
+    
+    
+
     public int getCodigo() {
         return codigo;
     }

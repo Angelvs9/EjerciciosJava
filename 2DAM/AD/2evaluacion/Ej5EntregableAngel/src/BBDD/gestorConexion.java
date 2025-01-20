@@ -19,6 +19,7 @@ public class gestorConexion {
             conn=DriverManager.getConnection(u,user,password);
             if (conn!=null) {
                 //bien
+                System.out.println("conectado a "+u);
             }
         } catch (SQLException ex) {
             Logger.getLogger(gestorConexion.class.getName()).log(Level.SEVERE, null, ex);

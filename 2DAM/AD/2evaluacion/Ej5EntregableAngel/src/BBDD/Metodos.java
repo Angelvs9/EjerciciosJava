@@ -5,6 +5,7 @@
  */
 package BBDD;
 
+import Modelo.Dato_fiscal;
 import Vista.Ej5EntregableAngel;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +16,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -82,10 +85,61 @@ public class Metodos {
         return existe;
     }
     
-    
-    public static boolean traspasoDatos(Connection bdPostgres,Connection bdMySql){
-        boolean traspaso=false;
+    public static void use(Connection gestor,String nombrebd){
+        try {
+            Statement stmt=gestor.createStatement();
+            String use="USE "+nombrebd+";";
+            stmt.execute(use);
+            stmt.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
+    }
+    
+    
+    
+    public static boolean traspasoADatosFiscales(Connection bdPostgres,Connection bdMySql){
+        boolean traspaso=false;
+        //la postgres es la del 127 y la mysql lo de siempre
+        
+        //a la bd vieja de postgres
+        String consulta1="select nif,nombre,apellidos,cp,cc from clientes";
+        try {
+            Statement staPostgres=bdPostgres.createStatement();
+            Statement staMySql=bdMySql.createStatement();
+            
+            //lista para guardar datos fiscales nuevos
+            List<Dato_fiscal> datosFiscalesList = new ArrayList<>();
+            //uso la de postgres(vieja)
+            
+            
+            ResultSet rs=staPostgres.executeQuery(consulta1);
+            while (rs.next()) {
+                String nif = rs.getString("nif");
+                String nombre = rs.getString("nombre");
+                String apellidos = rs.getString("apellidos");
+                int cp = rs.getInt("cp");
+                long cc = rs.getLong("cc");
+                
+                Dato_fiscal datoFiscal = new Dato_fiscal(nif, nombre, apellidos, cp, cc); 
+                datosFiscalesList.add(datoFiscal);
+            }
+            //uso la mysql nueva
+            
+            for (Dato_fiscal df : datosFiscalesList) {
+                String consultaInsertarDatosfiscales = "INSERT INTO datos_fiscales (nif, nombre, apellidos, cp, cc) VALUES ('" + df.getNif() + "', '" + df.getNombre() + "', '" + df.getApellidos() + "', '" + df.getCp() + "', " + df.getCa() + ")";
+                staMySql.executeUpdate(consultaInsertarDatosfiscales);
+                traspaso=true;
+            }
+            staPostgres.close();
+            staMySql.close();
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
         
