@@ -14,12 +14,12 @@ public class Aerolillas extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("IdaVuelta.fxml"));//escena 1 de ida y de vuelta
+        Parent root = FXMLLoader.load(getClass().getResource("/scenes/IdaVuelta.fxml"));//escena 1 de ida y de vuelta
         stage.setResizable(false);
         
         
         stage.setTitle("Aerolillas");
-        Image icono = new Image("img/avionIcono.png");
+        Image icono = new Image("/img/avionIcono.png");
         stage.getIcons().add(icono);
 
         

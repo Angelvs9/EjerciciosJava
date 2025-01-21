@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="820.0" prefWidth="1432.0" styleClass="fondo" stylesheets="styles/estilo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xmlControllers.ControllerIdaVuelta">
+   <children>
+       
+        <ChoiceBox fx:id="Ida" accessibleRole="CHECK_BOX" layoutX="175.0" layoutY="235.0" prefHeight="80.0" prefWidth="410.0" styleClass="inputTexto">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:id="castellon" fx:value="castellon" />
+                    <String fx:id="villanueva" fx:value="villanueva" />
+                    <String fx:id="valencia" fx:value="valencia" />
+                    <String fx:id="teruelIda" fx:value="teruel" />
+                    <String fx:id="navarraIda" fx:value="navarra" />
+                </FXCollections>
+            </items>
+        </ChoiceBox>
+  
+        <ChoiceBox fx:id="Vuelta" accessibleRole="CHECK_BOX" layoutX="847.0" layoutY="235.0" prefHeight="80.0" prefWidth="410.0" styleClass="inputTexto">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:id="oropesa" fx:value="oropesa" />
+                    <String fx:id="torre" fx:value="torre" />
+                    <String fx:id="zaragoza" fx:value="zaragoza" />
+                    <String fx:id="madrid" fx:value="madrid" />
+                    <String fx:id="navarraVuelta" fx:value="navarra" />
+                    <String fx:id="teruelVuelta" fx:value="teruel" />
+                </FXCollections>
+
+            </items>
+        </ChoiceBox>
+      <DatePicker fx:id="DatePicker" layoutX="547.0" layoutY="401.0" prefHeight="66.0" prefWidth="337.0" promptText="ida y vuelta" styleClass="datePicker" />
+      
+      <Button fx:id="botonVuelosClientes" layoutX="630.0" layoutY="665.0" mnemonicParsing="false" onAction="#goToScreenVuelosClientes" prefHeight="60.0" prefWidth="173.0" text="Ver Vuelos">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <Label layoutX="332.0" layoutY="184.0" styleClass="labelVuelos" text="ORIGEN">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="995.0" layoutY="184.0" prefHeight="39.0" prefWidth="115.0" styleClass="labelVuelos" text="DESTINO">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Button fx:id="botonLogin2" layoutX="55.0" layoutY="30.0" mnemonicParsing="false" onAction="#goToScreenLogin2" prefHeight="51.0" prefWidth="211.0" text="Iniciar Sesión trabajadores" />
+   </children>
+</AnchorPane>

@@ -1,14 +1,19 @@
 
 package aerolillas;
-import static aerolillas.Piloto.mostrarPilotos;
-import static aerolillas.Piloto.mostrarVuelosPiloto;
-import static aerolillas.Piloto.asignarVuelo;
-import static aerolillas.Piloto.cancelarVuelos;
-import static aerolillas.Avion.mostrarVuelos;
-import static aerolillas.Azafata.mostrarAzafatas;
-import static aerolillas.Billete.mostrarBilletes;
-import static aerolillas.Persona.mostrarPersonas;
-import static aerolillas.Persona.mostrarBilletesPersona;
+import modelo.Piloto;
+import modelo.Persona;
+import modelo.Azafata;
+import modelo.Billete;
+import modelo.Avion;
+import static modelo.Piloto.mostrarPilotos;
+import static modelo.Piloto.mostrarVuelosPiloto;
+import static modelo.Piloto.asignarVuelo;
+import static modelo.Piloto.cancelarVuelos;
+import static modelo.Avion.mostrarVuelos;
+import static modelo.Azafata.mostrarAzafatas;
+import static modelo.Billete.mostrarBilletes;
+import static modelo.Persona.mostrarPersonas;
+import static modelo.Persona.mostrarBilletesPersona;
 import utilidades.bbdd.Bd;
 import static utilidades.bbdd.Bd.crearBBDD;
 import utilidades.bbdd.Gestor_conexion_POSTGRE;
