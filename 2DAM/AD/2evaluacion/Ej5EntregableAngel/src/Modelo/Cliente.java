@@ -16,6 +16,11 @@ public class Cliente {
         this.Telf_contacto = Telf_contacto;
     }
 
+    public Cliente(long Telf_contacto) {
+        this.Telf_contacto = Telf_contacto;
+    }
+    
+
     public Cliente(int codigo, int Dato_fiscal) {
         this.codigo = codigo;
         this.Dato_fiscal = Dato_fiscal;

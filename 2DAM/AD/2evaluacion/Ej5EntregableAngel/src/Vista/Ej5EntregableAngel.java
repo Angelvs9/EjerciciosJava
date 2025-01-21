@@ -25,15 +25,15 @@ public class Ej5EntregableAngel {
         if (traspasoPoblaciones(gestorPostgres.getConn(), gestor.getConn())) {
             System.out.println("tabla poblaciones rellenada");
         }
-        if (traspasoClientes(gestorPostgres.getConn(), gestor.getConn())) {
-            System.out.println("tabla cleintes rellenada");
-        }
-        
         
         if (traspasoADatosFiscales(gestorPostgres.getConn(), gestor.getConn())) {
             System.out.println("tabla datos_fiscales rellenada correctamente");
         }
         
+        
+        if (traspasoClientes(gestorPostgres.getConn(), gestor.getConn())) {
+            System.out.println("telefono de clientes a null");
+        }
         
         
         gestorPostgres.cerrar_Conexion();

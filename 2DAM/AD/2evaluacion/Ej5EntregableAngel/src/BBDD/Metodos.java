@@ -118,7 +118,7 @@ public class Metodos {
             }
             
             for(Poblacion p:poblacionesList){
-                String consultaInsert = "INSERT INTO poblaciones (codigo, nombre) VALUES (" + p.getCodigo() + ", '" + p.getNombre() + "')";
+                String consultaInsert = "INSERT IGNORE INTO poblaciones (codigo, nombre) VALUES (" + p.getCodigo() + ", '" + p.getNombre() + "')";
                 staMySql.executeUpdate(consultaInsert);
                 insertado=true;
             }
@@ -134,24 +134,28 @@ public class Metodos {
     public static boolean traspasoClientes(Connection bdPostgres,Connection bdMySql){
         boolean insertado=false;
         try {
-            String consulta="";
+            String consulta="select count(id) from clientes";
+            
+            //ahora estoy conectandome a la vieja para ver cuantos clientes hay 
+            String consultaInsert = "INSERT INTO clientes (Telf_contacto) VALUES ('" +null+ "')";
             Statement staPostgres=bdPostgres.createStatement();
             Statement staMySql=bdMySql.createStatement();
-            List<Poblacion> clientesList = new ArrayList<>();
-            
+            List<Cliente> clientesList = new ArrayList<>();
             ResultSet rs=staPostgres.executeQuery(consulta);
-            while(rs.next()){
-                int codigo=rs.getInt("codigo");
-                String nombre=rs.getString("nombre");
-                
-                Poblacion poblacion=new Poblacion(codigo,nombre);
-                clientesList.add(poblacion);
+            int numeroClientes=0;
+            if(rs.next()){
+                numeroClientes=rs.getInt(1);
             }
+            //ahora ya se cuanto clientes hay en la anterior bd
+            for (int i = 0; i < numeroClientes; i++) {
+                staMySql.execute(consultaInsert);
+            }
+            //ahora estan todos puestos todos los telefonos a null
             
-            for(Cliente c:clientesList){
-                String consultaInsert = "INSERT INTO poblaciones (codigo, nombre) VALUES (" + c.getCodigo() + ", '" + c.getNombre() + "')";
-                staMySql.executeUpdate(consultaInsert);
-                insertado=true;
+            //ahora voy a rellenar el id de Dato_Fiscal
+            for (int i = 0; i < numeroClientes; i++) {
+                String consultaInsertDatoFiscal="Insert into clientes(Dato_fiscal) VALUES("+i+")";
+                staMySql.executeUpdate(consultaInsertDatoFiscal);
             }
             
             
