@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -99,6 +100,10 @@ public class Metodos {
         }
         
     }
+    
+    
+    
+    
     public static boolean traspasoPoblaciones(Connection bdPostgres,Connection bdMySql){
         boolean insertado=false;
         try {
@@ -131,6 +136,58 @@ public class Metodos {
         return insertado;
     }
     
+    public static boolean traspasoAnotaciones(Connection bdPostgres,Connection bdMySql){
+        boolean traspaso=false;
+        try {
+            String consulta="select codigo,nombre from poblaciones";
+            Statement staPostgres=bdPostgres.createStatement();
+            Statement staMySql=bdMySql.createStatement();
+            //primero saco el codigo de cuenta_clietne que tiene que estar rellenada primero
+            String select="select codigo,debe,haber,fecha from cuentas";
+            
+            String selectcc="select codigo from cuenta_cliente";
+            
+            ResultSet result=staMySql.executeQuery(selectcc);
+            while(result.next()){
+                int codigo=result.getInt("codigo");
+                String insert="insert into anotaciones(cc) values"+"("+codigo+")";
+            }
+            //cc rellenado de la tabla cuenta_cliente que ya existe y esta en mysql
+            
+            
+            ResultSet rs=staPostgres.executeQuery(select);
+            while(rs.next()){
+                int codigo=rs.getInt("codigo");
+                double debe=rs.getDouble("debe");
+                double haber=rs.getDouble("haber");
+                Date fecha=rs.getDate("fecha");
+                String insert = "INSERT INTO anotaciones (debe, haber, fecha) VALUES ("+ debe + ", " + haber + ", '" + fecha + "');";
+                staMySql.execute(insert);
+            }
+            //ahora la tabla anotaciones ya esta rellenada del todo con los datos de postgres vieja
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return traspaso;
+    }
+    
+    
+    
+    public static boolean traspasoCuenta_cliente(){
+        boolean traspaso=false;
+        
+        
+        
+        
+        return traspaso;
+    }
+    
+    
+    
+    
+    
     public static boolean traspasoClientes(Connection bdPostgres,Connection bdMySql){
         boolean insertado=false;
         try {
@@ -158,7 +215,9 @@ public class Metodos {
                 staMySql.executeUpdate(consultaInsertDatoFiscal);
             }
             
-            
+            staPostgres.close();
+            staMySql.close();
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
