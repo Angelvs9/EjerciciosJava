@@ -8,7 +8,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="820.0" prefWidth="1432.0" styleClass="fondo" stylesheets="styles/estilo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="xmlControllers.ControllerVuelosClientes">
    <children>
-      <Button fx:id="botonLogin1" layoutX="630.0" layoutY="665.0" mnemonicParsing="false" onAction="#goToScreenLogin1" prefHeight="60.0" prefWidth="173.0" text="Comprar">
+      <Button fx:id="botonLogin1" layoutX="633.0" layoutY="687.0" mnemonicParsing="false" onAction="#goToScreenLogin1" prefHeight="60.0" prefWidth="173.0" text="Comprar">
          <font>
             <Font size="27.0" />
          </font>
@@ -24,8 +24,8 @@
             <Font size="77.0" />
          </font>
       </Label>
-      <ListView fx:id="vuelosListView" layoutX="177.0" layoutY="368.0" prefHeight="242.0" prefWidth="1084.0" />
-      <Button fx:id="botonVerVuelos" layoutX="177.0" layoutY="297.0" mnemonicParsing="false" onAction="#verVuelos" prefHeight="50.0" prefWidth="202.0" text="ver vuelos">
+      <ListView fx:id="vuelosListView" layoutX="178.0" layoutY="223.0" prefHeight="430.0" prefWidth="1084.0" />
+      <Button fx:id="botonVerVuelos" layoutX="177.0" layoutY="150.0" mnemonicParsing="false" onAction="#verVuelos" prefHeight="50.0" prefWidth="202.0" text="ver vuelos">
          <font>
             <Font size="23.0" />
          </font>

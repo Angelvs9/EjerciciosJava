@@ -14,7 +14,7 @@
          </font>
       </Button>
       <Label layoutX="602.0" layoutY="60.0" />
-      <Label layoutX="579.0" layoutY="28.0" text="VUELOS">
+      <Label layoutX="390.0" layoutY="68.0" text="VUELOS PILOTO">
          <font>
             <Font size="77.0" />
          </font>

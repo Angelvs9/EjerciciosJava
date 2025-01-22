@@ -14,11 +14,11 @@
          </font>
       </Button>
       <Label layoutX="602.0" layoutY="60.0" />
-      <Label layoutX="579.0" layoutY="28.0" text="VUELOS">
+      <Label layoutX="408.0" layoutY="53.0" text="VUELOS AZAFATA">
          <font>
             <Font size="77.0" />
          </font>
       </Label>
-      <ListView layoutX="175.0" layoutY="265.0" prefHeight="396.0" prefWidth="1084.0" />
+      <ListView layoutX="174.0" layoutY="192.0" prefHeight="396.0" prefWidth="1084.0" />
    </children>
 </AnchorPane>
