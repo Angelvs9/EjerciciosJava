@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Aerolillas.jar" size="894287" download="eager" />
+    <jar href="Aerolillas.jar" size="894784" download="eager" />
     <jar href="lib\api.jar" size="8341" download="eager" />
     <jar href="lib\commons-codec-1.16.1.jar" size="365463" download="eager" />
     <jar href="lib\postgresql-42.5.0.jar" size="1046274" download="eager" />

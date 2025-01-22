@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import utilidades.bbdd.Bd;
@@ -21,10 +22,10 @@ public class ControllerIdaVuelta {
     private static ControllerIdaVuelta instance;
     
     @FXML
-    private ChoiceBox<String> Ida;
+    public ChoiceBox<String> Ida;
 
     @FXML
-    private ChoiceBox<String> Vuelta;
+    public ChoiceBox<String> Vuelta;
 
     @FXML
     private DatePicker DatePicker;
@@ -32,7 +33,9 @@ public class ControllerIdaVuelta {
     @FXML
     private Button botonVuelosClientes;
     
-        
+    @FXML
+    private Label lblRellenar;
+    
     @FXML
     private Button botonLogin2;
     
@@ -69,57 +72,30 @@ public class ControllerIdaVuelta {
     
 
     @FXML
-    private void goToScreenVuelosClientes(ActionEvent event) {
-        try {
-            // Cargar la nueva pantalla
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/VuelosClientes.fxml"));
-            Parent vuelosClientesPantalla = loader.load();
+    private void comprarBilletes(ActionEvent event) {
+        String idaSeleccionada = Ida.getValue();
+        String vueltaSeleccionada = Vuelta.getValue();
 
-            // Configurar una nueva escena con la pantalla cargada
-            Scene scene = new Scene(vuelosClientesPantalla);
+        if (idaSeleccionada == null || idaSeleccionada.isEmpty() || vueltaSeleccionada == null || vueltaSeleccionada.isEmpty()) {
+            lblRellenar.setVisible(true);
+        } else if (idaSeleccionada != null && vueltaSeleccionada != null) {
+            try {
+                // Cargar la nueva pantalla
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/VuelosClientes.fxml"));
+                Parent vuelosClientesPantalla = loader.load();
 
-            // Obtener el escenario (Stage) actual y establecer la nueva escena
-            Stage stage = (Stage) botonVuelosClientes.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+                // Configurar una nueva escena con la pantalla cargada
+                Scene scene = new Scene(vuelosClientesPantalla);
 
-
-    @FXML
-    public void vuelosDisponibles() {
-        // Tu lógica aquí para manejar los vuelos disponibles
-        Gestor_conexion_POSTGRE gest = new Gestor_conexion_POSTGRE("juego", false);
-        String vec[][];
-        String listaVuelos[][];
-        
-        System.out.println(Ida.getId() + Vuelta.getId());
-        String IdaSeleccionado = Ida.getId();
-        String VueltaSeleccionado = Vuelta.getId();
-
-        String consulta1 = "select idvuelo from vuelo where origen LIKE '" + IdaSeleccionado + "' and destino like '" + VueltaSeleccionado + "'";
-        vec = Bd.consultaSelect(gest, consulta1);
-        String consulta2 = "SELECT billete.idbillete, billete.nasiento, vuelo.origen, vuelo.destino, vuelo.puertaembarque FROM billete LEFT JOIN vuelo ON billete.idvuelo = vuelo.idvuelo where vuelo.idvuelo='" + vec[0][0] + "' and dnipersona is null order by nasiento";
-        System.out.println(consulta1);
-        System.out.println(consulta2);
-        
-        listaVuelos = Bd.consultaSelect(gest, consulta2);
-
-        // vuelosListView.getItems().clear();
-        try {
-            if (listaVuelos != null) {
-                for (int i = 0; i < listaVuelos.length; i++) {
-                    for (int j = 0; j < listaVuelos[0].length; j++) {
-                        vuelosListView.getItems().addAll(listaVuelos[i][j]);
-                        System.out.println(vuelosListView.getItems());
-
-                    }
-                }
+                // Obtener el escenario (Stage) actual y establecer la nueva escena
+                Stage stage = (Stage) botonVuelosClientes.getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
+
+
 }

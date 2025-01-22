@@ -58,7 +58,9 @@ public class ControllerLogin1 {
             labelNo.setVisible(true);
         } else if (validarCredenciales(usuario, password)) {
             labelNo.setText("¡Inicio de sesión exitoso!");
+            goToScreenMensajeReserva();
             labelNo.setVisible(true);
+            
         } else {
             labelNo.setText("El usuario no es correcto o no existe.");
             labelNo.setVisible(true);
@@ -95,6 +97,9 @@ public class ControllerLogin1 {
         } catch (IOException e) {
         }
     }
+    
+    
+    
     
 
 @FXML
