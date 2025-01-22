@@ -11,26 +11,26 @@ public class Dato_fiscal {
     private String nombre;
     private String apellidos;
     private int cp;//clave ajena al codigo de poblaciones
-    private long ca;//clave ajena al codigo(long) de cuenta_clientes
+    private long cc;//clave ajena al codigo(long) de cuenta_clientes
 
-    public Dato_fiscal(int codigo, String nif, String nombre, String apellidos, int cp, long ca) {
+    public Dato_fiscal(int codigo, String nif, String nombre, String apellidos, int cp, long cc) {
         this.codigo = codigo;
         this.nif = nif;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.cp = cp;
-        this.ca = ca;
+        this.cc = cc;
     }
 
-    public Dato_fiscal(String nif, String nombre, String apellidos, int cp, long ca) {
+
+
+    public Dato_fiscal(String nif, String nombre, String apellidos, int cp, long cc) {
         this.nif = nif;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.cp = cp;
-        this.ca = ca;
+        this.cc = cc;
     }
-    
-    
 
     public int getCodigo() {
         return codigo;
@@ -72,18 +72,18 @@ public class Dato_fiscal {
         this.cp = cp;
     }
 
-    public long getCa() {
-        return ca;
+    public long getCc() {
+        return cc;
     }
 
-    public void setCa(long ca) {
-        this.ca = ca;
+    public void setCc(long cc) {
+        this.cc = cc;
     }
 
     @Override
     public String toString() {
-        return "Dato_fiscal{" + "codigo=" + codigo + ", nif=" + nif + ", nombre=" + nombre + ", apellidos=" + apellidos + ", cp=" + cp + ", ca=" + ca + '}';
+        return "Dato_fiscal{" + "codigo=" + codigo + ", nif=" + nif + ", nombre=" + nombre + ", apellidos=" + apellidos + ", cp=" + cp + ", cc=" + cc + '}';
     }
-    
+   
     
 }

@@ -134,7 +134,7 @@ public class Metodos {
     public static boolean traspasoAnotaciones(Connection bdPostgres,Connection bdMySql){
         boolean traspaso=false;
         try {
-            String consulta="select codigo,nombre from poblaciones";
+
             Statement staPostgres=bdPostgres.createStatement();
             Statement staMySql=bdMySql.createStatement();
             //primero saco el codigo de cuenta_clietne que tiene que estar rellenada primero
@@ -192,8 +192,18 @@ public class Metodos {
                     //  saldo = (Haber - Debe)
                     saldo = totalHaber - totalDebe;
                 }
+                String repite="select codigo from cuenta_cliente";
+                ResultSet temp=staMySql.executeQuery(repite);
+                boolean aux=false;
+                while (temp.next()) {
+                    if (temp.getString("codigo").equals(codigoStr)) {
+                        aux=true;
+                    }
+                }
                 String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ("+codigoStr+",'"+tipo+"',"+saldo+")";
-                staMySql.execute(consultaInsert);
+                if (!aux) {
+                    staMySql.execute(consultaInsert);
+                }
                 traspaso=true;
             }
             
@@ -269,14 +279,14 @@ public class Metodos {
                 String apellidos = rs.getString("apellidos");
                 int cp = rs.getInt("cp");
                 long cc = rs.getLong("cc");
-                
+                System.out.println("cc: "+cc);
                 Dato_fiscal datoFiscal = new Dato_fiscal(nif, nombre, apellidos, cp, cc); 
                 datosFiscalesList.add(datoFiscal);
             }
             //uso la mysql nueva
             
             for (Dato_fiscal df : datosFiscalesList) {
-                String consultaInsertarDatosfiscales = "INSERT INTO datos_fiscales (nif, nombre, apellidos, cp, cc) VALUES ('" + df.getNif() + "', '" + df.getNombre() + "', '" + df.getApellidos() + "', '" + df.getCp() + "', " + df.getCa() + ")";
+                String consultaInsertarDatosfiscales = "INSERT INTO datos_fiscales (nif, nombre, apellidos, cp, cc) VALUES ('" + df.getNif() + "', '" + df.getNombre() + "', '" + df.getApellidos() + "', '" + df.getCp() + "', " + df.getCc() + ")";
                 staMySql.executeUpdate(consultaInsertarDatosfiscales);
                 traspaso=true;
             }
