@@ -144,7 +144,7 @@ public class Metodos {
             
             ResultSet result=staMySql.executeQuery(selectcc);
             while(result.next()){
-                int codigo=result.getInt("codigo");
+                long codigo=result.getLong("codigo");
                 String insert="insert into anotaciones(cc) values"+"("+codigo+")";
             }
             //cc rellenado de la tabla cuenta_cliente que ya existe y esta en mysql
@@ -152,7 +152,7 @@ public class Metodos {
             
             ResultSet rs=staPostgres.executeQuery(select);
             while(rs.next()){
-                int codigo=rs.getInt("codigo");
+                long codigo=rs.getLong("codigo");
                 double debe=rs.getDouble("debe");
                 double haber=rs.getDouble("haber");
                 Date fecha=rs.getDate("fecha");
@@ -216,7 +216,7 @@ public class Metodos {
             String consulta="select count(id) from clientes";
             
             //ahora estoy conectandome a la vieja para ver cuantos clientes hay 
-            String consultaInsert = "INSERT INTO clientes (Telf_contacto) VALUES ('" +null+ "')";
+            String consultaInsert = "INSERT INTO clientes (Telf_contacto) VALUES (NULL)";
             Statement staPostgres=bdPostgres.createStatement();
             Statement staMySql=bdMySql.createStatement();
             List<Cliente> clientesList = new ArrayList<>();
