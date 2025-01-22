@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package BBDD;
 
 import Modelo.Cliente;
@@ -175,11 +170,38 @@ public class Metodos {
     
     
     
-    public static boolean traspasoCuenta_cliente(){
+    public static boolean traspasoCuenta_cliente(Connection bdPostgres,Connection bdMySql){
         boolean traspaso=false;
-        
-        
-        
+        //anotaciones tiene que estar antes creada
+        try {
+            Statement staPostgres=bdPostgres.createStatement();
+            Statement staMySql=bdMySql.createStatement();
+            String consultaPostgres = "SELECT codigo,tipo FROM cuentas";
+            Statement stmt = bdPostgres.prepareStatement(consultaPostgres);
+            ResultSet result=staPostgres.executeQuery(consultaPostgres);
+            while(result.next()){
+                long codigo=result.getLong("codigo");
+                String tipo=result.getString("tipo");
+                double saldo=0.0;
+                String codigoStr = String.valueOf(codigo);
+                String consultaAnotaciones = "SELECT SUM(debe) AS total_debe, SUM(haber) AS total_haber " + "FROM anotaciones WHERE cc = " + codigoStr;
+                ResultSet rsAnotaciones = staMySql.executeQuery(consultaAnotaciones);
+                if (rsAnotaciones.next()) {
+                    double totalDebe = rsAnotaciones.getDouble("total_debe");
+                    double totalHaber = rsAnotaciones.getDouble("total_haber");
+                    //  saldo = (Haber - Debe)
+                    saldo = totalHaber - totalDebe;
+                }
+                String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ("+codigoStr+",'"+tipo+"',"+saldo+")";
+                staMySql.execute(consultaInsert);
+                traspaso=true;
+            }
+            
+            
+           
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         
         return traspaso;
     }

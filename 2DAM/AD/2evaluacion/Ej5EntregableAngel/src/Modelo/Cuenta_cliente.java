@@ -21,6 +21,12 @@ public class Cuenta_cliente {
         this.saldo = saldo;
     }
 
+    public Cuenta_cliente(long codigo, String tipo) {
+        this.codigo = codigo;
+        this.tipo = tipo;
+    }
+    
+
     public long getCodigo() {
         return codigo;
     }
