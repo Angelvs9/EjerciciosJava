@@ -23,25 +23,24 @@ public class Ej5EntregableAngel {
         //aqui es donde tengo que poner los nuevos datos
         gestorConexion gestor=new gestorConexion("jdbc:mysql://localhost:3306/","root","");
          
-        crearBaseDatos(gestor.getConn(), "audiogil.sql");
+        if(crearBaseDatos(gestor.getConn(), "audiogil.sql")){
+            System.out.println("BD creada");
+        }
         use(gestor.getConn(),"audiogil");
-        if (traspasoPoblaciones(gestorPostgres.getConn(), gestor.getConn())) {
-            System.out.println("tabla poblaciones rellenada");
-        }
-        if (traspasoCuenta_cliente(gestorPostgres.getConn(), gestor.getConn())) {
-            System.out.println("telefono de clientes a null");
-        }
+        
+        System.out.println(traspasoPoblaciones(gestorPostgres.getConn(), gestor.getConn())+" poblaciones insertadas");
+            
+        System.out.println(traspasoCuenta_cliente(gestorPostgres.getConn(), gestor.getConn())+" clientes insertados");
+
+
+        System.out.println(traspasoAnotaciones(gestorPostgres.getConn(), gestor.getConn())+" tabla anotaciones llenada");
+
 
         if (traspasoADatosFiscales(gestorPostgres.getConn(), gestor.getConn())) {
             System.out.println("tabla datos_fiscales rellenada correctamente");
         }
-        if (traspasoAnotaciones(gestorPostgres.getConn(), gestor.getConn())) {
-            System.out.println("tabla anotaciones llenada");
-        }
-        
-        if (traspasoClientes(gestorPostgres.getConn(), gestor.getConn())) {
-            System.out.println("tabla clientes rellenada correctamente");
-        }
+
+        System.out.println(traspasoClientes(gestorPostgres.getConn(), gestor.getConn())+" filas en tabla clientes");
         
         
         gestorPostgres.cerrar_Conexion();

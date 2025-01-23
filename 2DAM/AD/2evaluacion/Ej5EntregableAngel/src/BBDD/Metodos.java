@@ -99,8 +99,8 @@ public class Metodos {
     
     
     
-    public static boolean traspasoPoblaciones(Connection bdPostgres,Connection bdMySql){
-        boolean insertado=false;
+    public static int traspasoPoblaciones(Connection bdPostgres,Connection bdMySql){
+        int insertado=0;
         try {
             
             String consulta="select codigo,nombre from poblaciones";
@@ -120,7 +120,7 @@ public class Metodos {
             for(Poblacion p:poblacionesList){
                 String consultaInsert = "INSERT IGNORE INTO poblaciones (codigo, nombre) VALUES (" + p.getCodigo() + ", '" + p.getNombre() + "')";
                 staMySql.executeUpdate(consultaInsert);
-                insertado=true;
+                insertado++;
             }
             
             
@@ -131,8 +131,8 @@ public class Metodos {
         return insertado;
     }
     
-    public static boolean traspasoAnotaciones(Connection bdPostgres,Connection bdMySql){
-        boolean traspaso=false;
+    public static int traspasoAnotaciones(Connection bdPostgres,Connection bdMySql){
+        int traspaso=0;
         try {
 
             Statement staPostgres=bdPostgres.createStatement();
@@ -170,8 +170,8 @@ public class Metodos {
     
     
     
-    public static boolean traspasoCuenta_cliente(Connection bdPostgres,Connection bdMySql){
-        boolean traspaso=false;
+    public static int traspasoCuenta_cliente(Connection bdPostgres,Connection bdMySql){
+        int traspaso=0;
         //anotaciones tiene que estar antes creada
         try {
             Statement staPostgres=bdPostgres.createStatement();
@@ -203,8 +203,9 @@ public class Metodos {
                 String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ("+codigoStr+",'"+tipo+"',"+saldo+")";
                 if (!aux) {
                     staMySql.execute(consultaInsert);
+                    traspaso++;
                 }
-                traspaso=true;
+                
             }
             
             
@@ -220,8 +221,8 @@ public class Metodos {
     
     
     
-    public static boolean traspasoClientes(Connection bdPostgres,Connection bdMySql){
-        boolean insertado=false;
+    public static int traspasoClientes(Connection bdPostgres,Connection bdMySql){
+        int insertado=0;
         try {
             String consulta="select count(id) from clientes";
             
@@ -245,6 +246,7 @@ public class Metodos {
             for (int i = 0; i < numeroClientes; i++) {
                 String consultaInsertDatoFiscal="Insert into clientes(Dato_fiscal) VALUES("+i+")";
                 staMySql.executeUpdate(consultaInsertDatoFiscal);
+                insertado++;
             }
             
             staPostgres.close();
@@ -279,7 +281,6 @@ public class Metodos {
                 String apellidos = rs.getString("apellidos");
                 int cp = rs.getInt("cp");
                 long cc = rs.getLong("cc");
-                System.out.println("cc: "+cc);
                 Dato_fiscal datoFiscal = new Dato_fiscal(nif, nombre, apellidos, cp, cc); 
                 datosFiscalesList.add(datoFiscal);
             }
