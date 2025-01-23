@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -136,29 +137,25 @@ public class Metodos {
         try {
 
             Statement staPostgres=bdPostgres.createStatement();
-            Statement staMySql=bdMySql.createStatement();
             //primero saco el codigo de cuenta_clietne que tiene que estar rellenada primero
-            String select="select codigo,debe,haber,fecha from cuentas";
+            String select="select codigo,fecha,debe,haber from cuentas order by codigo";
+            ResultSet result=staPostgres.executeQuery(select);
             
-            String selectcc="select codigo from cuenta_cliente";
-            
-            ResultSet result=staMySql.executeQuery(selectcc);
             while(result.next()){
-                long codigo=result.getLong("codigo");
-                String insert="insert into anotaciones(cc) values"+"("+codigo+")";
+                String insert = "INSERT INTO anotaciones (cc, debe, haber, fecha) VALUES (?,?,?,?)";
+                String cc = String.valueOf(result.getLong("codigo"));
+                Date fecha = result.getDate("fecha");
+                double debe = result.getDouble("debe");
+                double haber = result.getDouble("haber");
+                PreparedStatement staMySql=bdMySql.prepareStatement(insert);
+                staMySql.setString(1, cc);
+                staMySql.setDouble(2, debe);  
+                staMySql.setDouble(3, haber);  
+                staMySql.setDate(4, fecha);
+                staMySql.executeUpdate();
+                traspaso++;
             }
             //cc rellenado de la tabla cuenta_cliente que ya existe y esta en mysql
-            
-            
-            ResultSet rs=staPostgres.executeQuery(select);
-            while(rs.next()){
-                long codigo=rs.getLong("codigo");
-                double debe=rs.getDouble("debe");
-                double haber=rs.getDouble("haber");
-                Date fecha=rs.getDate("fecha");
-                String insert = "INSERT INTO anotaciones (debe, haber, fecha) VALUES ("+ debe + ", " + haber + ", '" + fecha + "');";
-                staMySql.execute(insert);
-            }
             //ahora la tabla anotaciones ya esta rellenada del todo con los datos de postgres vieja
             
             
@@ -189,23 +186,26 @@ public class Metodos {
                 if (rsAnotaciones.next()) {
                     double totalDebe = rsAnotaciones.getDouble("total_debe");
                     double totalHaber = rsAnotaciones.getDouble("total_haber");
-                    //  saldo = (Haber - Debe)
+
                     saldo = totalHaber - totalDebe;
                 }
                 String repite="select codigo from cuenta_cliente";
                 ResultSet temp=staMySql.executeQuery(repite);
                 boolean aux=false;
                 while (temp.next()) {
+                    aux=false;
                     if (temp.getString("codigo").equals(codigoStr)) {
-                        aux=true;
+                        aux=true; 
+                    }
+                
+                    String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ("+codigoStr+",'"+tipo+"',"+saldo+")";
+                    if (!aux) {
+                        //si no se repite 
+                        System.out.println(consultaInsert);
+                        staMySql.execute(consultaInsert);
+                        traspaso++;
                     }
                 }
-                String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ("+codigoStr+",'"+tipo+"',"+saldo+")";
-                if (!aux) {
-                    staMySql.execute(consultaInsert);
-                    traspaso++;
-                }
-                
             }
             
             

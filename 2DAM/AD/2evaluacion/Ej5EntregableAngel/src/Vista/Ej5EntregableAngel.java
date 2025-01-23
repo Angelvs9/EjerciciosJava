@@ -34,14 +34,13 @@ public class Ej5EntregableAngel {
 
 
         System.out.println(traspasoAnotaciones(gestorPostgres.getConn(), gestor.getConn())+" tabla anotaciones llenada");
-
+        
+        System.out.println(traspasoClientes(gestorPostgres.getConn(), gestor.getConn())+" filas en tabla clientes");
 
         if (traspasoADatosFiscales(gestorPostgres.getConn(), gestor.getConn())) {
             System.out.println("tabla datos_fiscales rellenada correctamente");
         }
 
-        System.out.println(traspasoClientes(gestorPostgres.getConn(), gestor.getConn())+" filas en tabla clientes");
-        
         
         gestorPostgres.cerrar_Conexion();
         gestor.cerrar_Conexion();
