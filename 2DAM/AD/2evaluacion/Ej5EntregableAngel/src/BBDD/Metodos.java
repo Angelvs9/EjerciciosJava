@@ -169,45 +169,46 @@ public class Metodos {
     
     public static int traspasoCuenta_cliente(Connection bdPostgres,Connection bdMySql){
         int traspaso=0;
+        double saldo=0.0;
         //anotaciones tiene que estar antes creada
         try {
             Statement staPostgres=bdPostgres.createStatement();
             Statement staMySql=bdMySql.createStatement();
-            String consultaPostgres = "SELECT codigo,tipo FROM cuentas";
-            Statement stmt = bdPostgres.prepareStatement(consultaPostgres);
-            ResultSet result=staPostgres.executeQuery(consultaPostgres);
+            String consultaPostgres = "SELECT * FROM cuentas";
+            Statement stmt = bdPostgres.createStatement();
+            ResultSet result=stmt.executeQuery(consultaPostgres);
             while(result.next()){
                 long codigo=result.getLong("codigo");
                 String tipo=result.getString("tipo");
-                double saldo=0.0;
+                
                 String codigoStr = String.valueOf(codigo);
-                String consultaAnotaciones = "SELECT SUM(debe) AS total_debe, SUM(haber) AS total_haber " + "FROM anotaciones WHERE cc = " + codigoStr;
-                ResultSet rsAnotaciones = staMySql.executeQuery(consultaAnotaciones);
+
+                String consultaAnotaciones = "SELECT SUM(debe) AS total_debe, SUM(haber) AS total_haber " + "FROM cuentas WHERE codigo = " + codigoStr;
+                ResultSet rsAnotaciones = staPostgres.executeQuery(consultaAnotaciones);
+                System.out.println("cositas "+consultaAnotaciones);
                 if (rsAnotaciones.next()) {
                     double totalDebe = rsAnotaciones.getDouble("total_debe");
                     double totalHaber = rsAnotaciones.getDouble("total_haber");
 
                     saldo = totalHaber - totalDebe;
+                    System.out.println("debe:"+totalDebe);
+                    System.out.println("haber"+totalHaber);
+                    System.out.println("saldoooo:   w"+saldo+"\n");
                 }
-                String repite="select codigo from cuenta_cliente";
-                ResultSet temp=staMySql.executeQuery(repite);
-                boolean aux=false;
-                while (temp.next()) {
-                    aux=false;
-                    if (temp.getString("codigo").equals(codigoStr)) {
-                        aux=true; 
-                    }
+                rsAnotaciones.close();
                 
-                    String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ("+codigoStr+",'"+tipo+"',"+saldo+")";
-                    if (!aux) {
-                        //si no se repite 
-                        System.out.println(consultaInsert);
-                        staMySql.execute(consultaInsert);
-                        traspaso++;
-                    }
+                if (!repiteCuenta_Cliente(staMySql.getConnection(),codigoStr)) {
+//                    String repite="select codigo from cuenta_cliente";
+//                    ResultSet temp=staMySql.executeQuery(repite);
+                    String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ('"+codigoStr+"','"+tipo+"',"+saldo+")";
+                    System.out.println(consultaInsert);
+                    staMySql.execute(consultaInsert);
+                    traspaso++;
+                    saldo = 0;
                 }
             }
-            
+//            result.close();
+            stmt.close();
             
            
         } catch (SQLException ex) {
@@ -216,7 +217,22 @@ public class Metodos {
         
         return traspaso;
     }
-    
+    private static boolean repiteCuenta_Cliente(Connection bdMySql,String codigoStr){
+        boolean repita=false;
+        try {
+            
+            Statement staMySql=bdMySql.createStatement();
+            String consultarepita="select codigo from cuenta_cliente where codigo="+codigoStr;
+            ResultSet rsRepita =staMySql.executeQuery(consultarepita);
+            if (rsRepita.next()) {
+                repita=true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return repita;
+    }
     
     
     

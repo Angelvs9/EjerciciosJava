@@ -30,7 +30,7 @@ public class Ej5EntregableAngel {
         
         System.out.println(traspasoPoblaciones(gestorPostgres.getConn(), gestor.getConn())+" poblaciones insertadas");
             
-        System.out.println(traspasoCuenta_cliente(gestorPostgres.getConn(), gestor.getConn())+" clientes insertados");
+        System.out.println(traspasoCuenta_cliente(gestorPostgres.getConn(), gestor.getConn())+" Cuenta_clientes insertados");
 
 
         System.out.println(traspasoAnotaciones(gestorPostgres.getConn(), gestor.getConn())+" tabla anotaciones llenada");
