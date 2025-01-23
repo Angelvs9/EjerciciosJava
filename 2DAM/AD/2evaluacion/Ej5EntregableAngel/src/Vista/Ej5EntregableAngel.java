@@ -4,7 +4,6 @@ import BBDD.Metodos;
 import static BBDD.Metodos.crearBaseDatos;
 import static BBDD.Metodos.traspasoADatosFiscales;
 import static BBDD.Metodos.traspasoAnotaciones;
-import static BBDD.Metodos.traspasoClientes;
 import static BBDD.Metodos.traspasoCuenta_cliente;
 import static BBDD.Metodos.traspasoPoblaciones;
 import static BBDD.Metodos.use;
@@ -34,14 +33,9 @@ public class Ej5EntregableAngel {
 
 
         System.out.println(traspasoAnotaciones(gestorPostgres.getConn(), gestor.getConn())+" tabla anotaciones llenada");
-        
-        System.out.println(traspasoClientes(gestorPostgres.getConn(), gestor.getConn())+" filas en tabla clientes");
 
-        if (traspasoADatosFiscales(gestorPostgres.getConn(), gestor.getConn())) {
-            System.out.println("tabla datos_fiscales rellenada correctamente");
-        }
-
-        
+        System.out.println(traspasoADatosFiscales(gestorPostgres.getConn(), gestor.getConn())+" tabla datos_fiscales y clientes rellenada correctamente");
+ 
         gestorPostgres.cerrar_Conexion();
         gestor.cerrar_Conexion();
     }

@@ -187,21 +187,20 @@ public class Metodos {
 
                 String consultaAnotaciones = "SELECT SUM(debe) AS total_debe, SUM(haber) AS total_haber " + "FROM cuentas WHERE codigo = " + codigoStr;
                 ResultSet rsAnotaciones = staPostgres.executeQuery(consultaAnotaciones);
-                System.out.println("cositas "+consultaAnotaciones);
                 if (rsAnotaciones.next()) {
                     double totalDebe = rsAnotaciones.getDouble("total_debe");
                     double totalHaber = rsAnotaciones.getDouble("total_haber");
 
                     saldo = totalHaber - totalDebe;
-                    System.out.println("debe:"+totalDebe);
-                    System.out.println("haber"+totalHaber);
-                    System.out.println("saldoooo:   w"+saldo+"\n");
+//                    System.out.println("debe: "+totalDebe);
+//                    System.out.println("haber: "+totalHaber);
+//                    System.out.println("saldo: "+saldo+"\n");
                 }
                 rsAnotaciones.close();
                 
                 if (!repiteCuenta_Cliente(staMySql.getConnection(),codigoStr)) {
                     String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ('"+codigoStr+"','"+tipo+"',"+saldo+")";
-                    System.out.println(consultaInsert);
+
                     staMySql.execute(consultaInsert);
                     traspaso++;
                     saldo = 0;
@@ -233,17 +232,8 @@ public class Metodos {
     }
     
     
-    
-    
-    public static int traspasoClientes(Connection bdPostgres,Connection bdMySql){
-        int insertado=0;
-        //aqui ya tengo todos los datos que necesito porque ya el resto de tablas estan llenas
-        return insertado;
-    }
-    
-    
-    public static boolean traspasoADatosFiscales(Connection bdPostgres,Connection bdMySql){
-        boolean traspaso=false;
+    public static int traspasoADatosFiscales(Connection bdPostgres,Connection bdMySql){
+        int traspaso=0;
         //la postgres es la del 127 y la mysql lo de siempre
         
         //a la bd vieja de postgres
@@ -271,8 +261,16 @@ public class Metodos {
             
             for (Dato_fiscal df : datosFiscalesList) {
                 String consultaInsertarDatosfiscales = "INSERT INTO datos_fiscales (nif, nombre, apellidos, cp, cc) VALUES ('" + df.getNif() + "', '" + df.getNombre() + "', '" + df.getApellidos() + "', '" + df.getCp() + "', " + df.getCc() + ")";
-                staMySql.executeUpdate(consultaInsertarDatosfiscales);
-                traspaso=true;
+                staMySql.executeUpdate(consultaInsertarDatosfiscales,Statement.RETURN_GENERATED_KEYS);
+                
+                //aqui relleno el clientes tambien
+                ResultSet codigoGenerado=staMySql.getGeneratedKeys();
+                if (codigoGenerado.next()) {
+                    int codigo=codigoGenerado.getInt(1);
+                    String insertCliente = "INSERT INTO clientes (dato_fiscal) VALUES (" + codigo + ")";
+                    staMySql.executeUpdate(insertCliente);
+                }
+                traspaso++;
             }
             staPostgres.close();
             staMySql.close();
