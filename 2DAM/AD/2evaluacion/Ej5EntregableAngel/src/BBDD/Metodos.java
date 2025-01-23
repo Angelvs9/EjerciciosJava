@@ -123,7 +123,8 @@ public class Metodos {
                 staMySql.executeUpdate(consultaInsert);
                 insertado++;
             }
-            
+            staPostgres.close();
+            staMySql.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,6 +158,7 @@ public class Metodos {
             }
             //cc rellenado de la tabla cuenta_cliente que ya existe y esta en mysql
             //ahora la tabla anotaciones ya esta rellenada del todo con los datos de postgres vieja
+            staPostgres.close();
             
             
         } catch (SQLException ex) {
@@ -198,8 +200,6 @@ public class Metodos {
                 rsAnotaciones.close();
                 
                 if (!repiteCuenta_Cliente(staMySql.getConnection(),codigoStr)) {
-//                    String repite="select codigo from cuenta_cliente";
-//                    ResultSet temp=staMySql.executeQuery(repite);
                     String consultaInsert="insert into cuenta_cliente (codigo,tipo,saldo) VALUES ('"+codigoStr+"','"+tipo+"',"+saldo+")";
                     System.out.println(consultaInsert);
                     staMySql.execute(consultaInsert);
@@ -207,10 +207,8 @@ public class Metodos {
                     saldo = 0;
                 }
             }
-//            result.close();
             stmt.close();
-            
-           
+            result.close();
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         } 
@@ -227,7 +225,7 @@ public class Metodos {
             if (rsRepita.next()) {
                 repita=true;
             }
-
+            rsRepita.close();
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -239,38 +237,7 @@ public class Metodos {
     
     public static int traspasoClientes(Connection bdPostgres,Connection bdMySql){
         int insertado=0;
-        try {
-            String consulta="select count(id) from clientes";
-            
-            //ahora estoy conectandome a la vieja para ver cuantos clientes hay 
-            String consultaInsert = "INSERT INTO clientes (Telf_contacto) VALUES (NULL)";
-            Statement staPostgres=bdPostgres.createStatement();
-            Statement staMySql=bdMySql.createStatement();
-            List<Cliente> clientesList = new ArrayList<>();
-            ResultSet rs=staPostgres.executeQuery(consulta);
-            int numeroClientes=0;
-            if(rs.next()){
-                numeroClientes=rs.getInt(1);
-            }
-            //ahora ya se cuanto clientes hay en la anterior bd
-            for (int i = 0; i < numeroClientes; i++) {
-                staMySql.execute(consultaInsert);
-            }
-            //ahora estan todos puestos todos los telefonos a null
-            
-            //ahora voy a rellenar el id de Dato_Fiscal
-            for (int i = 0; i < numeroClientes; i++) {
-                String consultaInsertDatoFiscal="Insert into clientes(Dato_fiscal) VALUES("+i+")";
-                staMySql.executeUpdate(consultaInsertDatoFiscal);
-                insertado++;
-            }
-            
-            staPostgres.close();
-            staMySql.close();
-            rs.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //aqui ya tengo todos los datos que necesito porque ya el resto de tablas estan llenas
         return insertado;
     }
     
