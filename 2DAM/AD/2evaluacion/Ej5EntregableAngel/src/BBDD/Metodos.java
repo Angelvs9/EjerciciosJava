@@ -234,54 +234,46 @@ public class Metodos {
     
     public static int traspasoADatosFiscales(Connection bdPostgres,Connection bdMySql){
         int traspaso=0;
-        //la postgres es la del 127 y la mysql lo de siempre
-        
-        //a la bd vieja de postgres
-        String consulta1="select nif,nombre,apellidos,cp,cc from clientes";
         try {
-            Statement staPostgres=bdPostgres.createStatement();
-            Statement staMySql=bdMySql.createStatement();
-            
-            //lista para guardar datos fiscales nuevos
-            List<Dato_fiscal> datosFiscalesList = new ArrayList<>();
-            //uso la de postgres(vieja)
-            
-            
-            ResultSet rs=staPostgres.executeQuery(consulta1);
-            while (rs.next()) {
-                String nif = rs.getString("nif");
-                String nombre = rs.getString("nombre");
-                String apellidos = rs.getString("apellidos");
+            //la postgres es la del 127 y la mysql lo de siempre
+            //a la bd vieja de postgres
+            String consulta1="select * from clientes";
+            Statement stPostgres=bdPostgres.createStatement();
+            ResultSet rs=stPostgres.executeQuery(consulta1);
+            while (rs.next()) {                
+                String nif=rs.getString("nif");
+                String nombre=rs.getString("nombre");
+                String apellidos=rs.getString("apellidos");
                 int cp = rs.getInt("cp");
                 long cc = rs.getLong("cc");
-                Dato_fiscal datoFiscal = new Dato_fiscal(nif, nombre, apellidos, cp, cc); 
-                datosFiscalesList.add(datoFiscal);
-            }
-            //uso la mysql nueva
-            
-            for (Dato_fiscal df : datosFiscalesList) {
-                String consultaInsertarDatosfiscales = "INSERT INTO datos_fiscales (nif, nombre, apellidos, cp, cc) VALUES ('" + df.getNif() + "', '" + df.getNombre() + "', '" + df.getApellidos() + "', '" + df.getCp() + "', " + df.getCc() + ")";
-                staMySql.executeUpdate(consultaInsertarDatosfiscales,Statement.RETURN_GENERATED_KEYS);
                 
-                //aqui relleno el clientes tambien
-                ResultSet codigoGenerado=staMySql.getGeneratedKeys();
-                if (codigoGenerado.next()) {
-                    int codigo=codigoGenerado.getInt(1);
-                    String insertCliente = "INSERT INTO clientes (dato_fiscal) VALUES (" + codigo + ")";
-                    staMySql.executeUpdate(insertCliente);
+                String consultaInsert="insert into datos_fiscales (nif,nombre,apellidos,cp,cc) values (?,?,?,?,?)";
+                PreparedStatement pstMySql=bdMySql.prepareStatement(consultaInsert,Statement.RETURN_GENERATED_KEYS);
+                pstMySql.setString(1,nif);
+                pstMySql.setString(2,nombre);
+                pstMySql.setString(3,apellidos);
+                pstMySql.setInt(4,cp);
+                pstMySql.setLong(5,cc);
+                pstMySql.executeUpdate();
+                
+                ResultSet codigoCliente = pstMySql.getGeneratedKeys();
+                if (codigoCliente.next()) {
+                    int codigo = codigoCliente.getInt(1);
+                    String consultaInsertarClientes = "INSERT INTO clientes (dato_fiscal) VALUES (" + codigo + ")";
+                    Statement stMySql = bdMySql.createStatement();
+                    stMySql.executeUpdate(consultaInsertarClientes);
+                    
+                    stMySql.close();
                 }
+                codigoCliente.close();
                 traspaso++;
             }
-            staPostgres.close();
-            staMySql.close();
             rs.close();
-            
+            stPostgres.close();
             
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
         
         return traspaso;
     }
