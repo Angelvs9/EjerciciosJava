@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -65,6 +66,9 @@ public class Metodos {
             if (!rs.next()) {
                 sta.executeUpdate(insert);
             }
+            
+            rs.close();
+            sta.close();
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -74,7 +78,16 @@ public class Metodos {
     
     public static boolean hacerPedido(Connection gestor,Pedido p){
         boolean temp=false;
-        
+        String insertar="insert into pedidos (cliente,fecha,cantidad) values ("+p.getCliente()+","+Date.valueOf(p.getFecha())+","+p.getCantidad()+");";
+        try {
+            Statement sta=gestor.createStatement();
+            sta.executeUpdate(insertar);
+            temp=true;
+            
+            sta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return temp;
     }

@@ -2,9 +2,11 @@
 package Vista;
 
 import BBDD.GestorConexion;
-import BBDD.Metodos.*;
+import BBDD.Metodos;
+import static BBDD.Metodos.hacerPedido;
 import Modelo.Cliente;
 import Modelo.Pedido;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,12 +41,12 @@ public class Repaso2Angel {
         Scanner sc=new Scanner(System.in);
         int opcion=0;
         
-        while(opcion<=5){
+        while(opcion<=10){
             System.out.println("1-alta cliente");
             System.out.println("2-baja cliente");
             System.out.println("3-modificar cliente");
             System.out.println("4-hacer pedido");
-            System.out.println("5-salir");
+            System.out.println("*-salir");
             opcion=sc.nextInt();
             sc.nextLine();
             switch (opcion) {
@@ -64,7 +66,35 @@ public class Repaso2Angel {
 
                 break;
             case 2:
-                System.out.println("baja");
+                try {
+                    String queryClientes="select id,nombre,apellidos from clientes";
+                    String delete = "DELETE FROM clientes WHERE id = ?";
+                    Statement stm=gestor.getConexion().createStatement();
+                    System.out.println("selecciona el id del cliente a eliminar:\n");
+                    ResultSet res=stm.executeQuery(queryClientes);
+                    while (res.next()) {
+                        int id=res.getInt("id");
+                        String nombreCliente=res.getString("nombre");
+                        String apellidosCliente=res.getString("apellidos");
+                        System.out.println("id: "+id+"nombre: "+nombreCliente+"apellidos: "+apellidosCliente);
+                    }
+                    int idCliente=sc.nextInt();
+                    String consultaeliminarCliente = "DELETE FROM clientes WHERE id = " + idCliente;
+                    
+                    
+                    
+                    PreparedStatement psta=gestor.getConexion().prepareStatement(delete);
+                    psta.setInt(1, idCliente);
+                    int filasAfectadas = psta.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        System.out.println("Cliente con ID " + idCliente + " eliminado correctamente.");
+                    }
+                    
+
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
                 break;
             case 3:
@@ -91,6 +121,7 @@ public class Repaso2Angel {
                     String fecha = sc.nextLine();
                     
                     Pedido p=new Pedido(idCliente,fecha,folios);
+                    
                     hacerPedido(gestor.getConexion(),p);
                     
                 } catch (SQLException ex) {
@@ -99,13 +130,13 @@ public class Repaso2Angel {
    
                 break;
             
-            case 5:
-                System.out.println("Saliendo..");
+            case 10:
+                System.out.println("Saliendo...");
                 break;
             }
         }
-        
-        
+        sc.close();
+        gestor.cerrarConexion();
     }
     
 }
