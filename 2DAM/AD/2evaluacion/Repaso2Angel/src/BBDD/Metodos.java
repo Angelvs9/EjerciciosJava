@@ -2,6 +2,7 @@
 package BBDD;
 
 import Modelo.Cliente;
+import Modelo.Pedido;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,16 +63,20 @@ public class Metodos {
             String insert="insert into clientes (nombre,apellidos,dni) values ("+c.getNombre()+","+c.getApellidos()+","+c.getDni()+");";
             ResultSet rs=sta.executeQuery(query);
             if (!rs.next()) {
-                
+                sta.executeUpdate(insert);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
+        return temp;
+    }
+    
+    public static boolean hacerPedido(Connection gestor,Pedido p){
+        boolean temp=false;
         
         
         return temp;
     }
-    
     
 }

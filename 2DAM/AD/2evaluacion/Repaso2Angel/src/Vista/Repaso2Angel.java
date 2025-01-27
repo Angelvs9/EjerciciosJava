@@ -2,8 +2,9 @@
 package Vista;
 
 import BBDD.GestorConexion;
-import BBDD.Metodos;
+import BBDD.Metodos.*;
 import Modelo.Cliente;
+import Modelo.Pedido;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -71,7 +72,31 @@ public class Repaso2Angel {
                 
                 break;
             case 4:
-                System.out.println("hacer pedido ");
+                try {     
+                    String consultaClientes="select id,nombre,apellidos from clientes";
+                    Statement sta=gestor.getConexion().createStatement();
+                    System.out.println("selecciona un id:\n");
+                    ResultSet rs=sta.executeQuery(consultaClientes);
+                    while (rs.next()) {
+                        int id=rs.getInt("id");
+                        String nombreCliente=rs.getString("nombre");
+                        String apellidosCliente=rs.getString("apellidos");
+                        System.out.println("id: "+id+"nombre: "+nombreCliente+"apellidos: "+apellidosCliente);
+                    }
+                    int idCliente=sc.nextInt();
+                    sc.nextLine(); 
+                    System.out.println("cantidad de folios");
+                    int folios=sc.nextInt();
+                    System.out.println("introduce la fecha YYYY-MM-DD");
+                    String fecha = sc.nextLine();
+                    
+                    Pedido p=new Pedido(idCliente,fecha,folios);
+                    hacerPedido(gestor.getConexion(),p);
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+   
                 break;
             
             case 5:
