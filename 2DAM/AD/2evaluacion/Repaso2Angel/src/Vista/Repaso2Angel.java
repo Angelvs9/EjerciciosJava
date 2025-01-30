@@ -4,6 +4,7 @@ package Vista;
 import BBDD.GestorConexion;
 import BBDD.Metodos;
 import static BBDD.Metodos.borrarPedidos;
+import static BBDD.Metodos.cancelarPedido;
 import static BBDD.Metodos.hacerPedido;
 import static BBDD.Metodos.use;
 import Modelo.Cliente;
@@ -170,9 +171,9 @@ public class Repaso2Angel {
                 } catch (SQLException ex) {
                     Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            
-                //cancelarPedido(gestor.getConexion(),idPedido);
-                
+                System.out.println("introduce el codigo del pedido a eliminar");
+                int idPedido=sc.nextInt();
+                cancelarPedido(gestor.getConexion(),idPedido);
                 break;
                 
                 

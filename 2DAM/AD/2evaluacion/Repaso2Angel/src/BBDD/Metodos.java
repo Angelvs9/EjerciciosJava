@@ -78,6 +78,18 @@ public class Metodos {
         
     }
     
+    public static void cancelarPedido(Connection conexion,int id){
+        try {
+            Statement sta=conexion.createStatement();
+            sta.executeUpdate("DELETE FROM pedidos WHERE codigo = "+id);
+            sta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    
     public static boolean altaCliente(Connection gestor,Cliente c){
         boolean temp=false;
         use(gestor);
