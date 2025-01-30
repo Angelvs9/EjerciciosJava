@@ -69,30 +69,37 @@ public class Repaso2Angel {
             case 2:
                 try {
                     String queryClientes="select id,nombre,apellidos from clientes";
+                    boolean hayclientes=false;
                     String delete = "DELETE FROM clientes WHERE id = ?";
                     Statement stm=gestor.getConexion().createStatement();
-                    System.out.println("selecciona el id del cliente a eliminar:\n");
                     use(gestor.getConexion());
                     ResultSet res=stm.executeQuery(queryClientes);
                     while (res.next()) {
+                        hayclientes=true;
                         int id=res.getInt("id");
                         String nombreCliente=res.getString("nombre");
                         String apellidosCliente=res.getString("apellidos");
                         System.out.println("id: "+id+" nombre: "+nombreCliente+" apellidos: "+apellidosCliente);
                     }
-                    int idCliente=sc.nextInt();
-                    String consultaeliminarCliente = "DELETE FROM clientes WHERE id = " + idCliente;
-                    
-                    
-                    
-                    PreparedStatement psta=gestor.getConexion().prepareStatement(delete);
-                    psta.setInt(1, idCliente);
-                    int filasAfectadas = psta.executeUpdate();
-                    if (filasAfectadas > 0) {
-                        System.out.println("Cliente con ID " + idCliente + " eliminado correctamente.");
-                    }
-                    
 
+                    if (hayclientes) {
+                        System.out.println("selecciona el id del cliente a eliminar:\n");
+                        int idCliente=sc.nextInt();
+                        PreparedStatement psta=gestor.getConexion().prepareStatement(delete);
+                        psta.setInt(1, idCliente);
+                        int filasAfectadas = psta.executeUpdate();
+                        
+                        if (filasAfectadas > 0) {
+                            System.out.println("Cliente con ID " + idCliente + " eliminado correctamente.");
+                        }
+                        else{
+                            System.out.println("\n----------\nno existe ese cliente\n----------\n");
+                        }
+                    
+                    }else{
+                        System.out.println("\n----------\nno hay clientes a eliminar\n----------\n");
+                    }
+ 
                     
                 } catch (SQLException ex) {
                     Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
