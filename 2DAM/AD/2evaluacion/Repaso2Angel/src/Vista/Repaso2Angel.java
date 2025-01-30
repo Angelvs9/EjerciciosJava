@@ -42,12 +42,12 @@ public class Repaso2Angel {
         Scanner sc=new Scanner(System.in);
         int opcion=0;
         
-        while(opcion<=10){
+        while(opcion<5){
             System.out.println("1-alta cliente");
             System.out.println("2-baja cliente");
             System.out.println("3-modificar cliente");
             System.out.println("4-hacer pedido");
-            System.out.println("*-salir");
+            System.out.println("5-salir");
             opcion=sc.nextInt();
             sc.nextLine();
             switch (opcion) {
@@ -68,11 +68,11 @@ public class Repaso2Angel {
                 break;
             case 2:
                 try {
+                    use(gestor.getConexion());
                     String queryClientes="select id,nombre,apellidos from clientes";
                     boolean hayclientes=false;
                     String delete = "DELETE FROM clientes WHERE id = ?";
                     Statement stm=gestor.getConexion().createStatement();
-                    use(gestor.getConexion());
                     ResultSet res=stm.executeQuery(queryClientes);
                     while (res.next()) {
                         hayclientes=true;
@@ -150,7 +150,7 @@ public class Repaso2Angel {
    
                 break;
             
-            case 10:
+            case 5:
                 System.out.println("Saliendo...");
                 break;
             }
