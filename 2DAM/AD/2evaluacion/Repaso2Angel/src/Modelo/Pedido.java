@@ -12,9 +12,8 @@ public class Pedido {
     private String fecha;
     private int cantidad;
 
-    public Pedido(int cliente, String fecha, int cantidad) {
+    public Pedido(int cliente, int cantidad) {
         this.cliente = cliente;
-        this.fecha = fecha;
         this.cantidad = cantidad;
     }
 

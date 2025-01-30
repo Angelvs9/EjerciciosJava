@@ -56,15 +56,28 @@ public class Metodos {
         return creada;
     }
     
+    public static void use(Connection c){
+        String use="use examen";
+        try {
+            Statement sta=c.createStatement();
+            sta.execute(use);
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     public static boolean altaCliente(Connection gestor,Cliente c){
         boolean temp=false;
+        use(gestor);
         try {
             Statement sta=gestor.createStatement();
             String query="select dni from clientes where dni='"+c.getDni()+"'";
-            String insert="insert into clientes (nombre,apellidos,dni) values ("+c.getNombre()+","+c.getApellidos()+","+c.getDni()+");";
+            String insert="insert into clientes (nombre,apellidos,dni) values ('"+c.getNombre()+"','"+c.getApellidos()+"','"+c.getDni()+"');";
             ResultSet rs=sta.executeQuery(query);
             if (!rs.next()) {
                 sta.executeUpdate(insert);
+                temp=true;
             }
             
             rs.close();
@@ -78,17 +91,40 @@ public class Metodos {
     
     public static boolean hacerPedido(Connection gestor,Pedido p){
         boolean temp=false;
-        String insertar="insert into pedidos (cliente,fecha,cantidad) values ("+p.getCliente()+","+Date.valueOf(p.getFecha())+","+p.getCantidad()+");";
+        boolean existe=true;
+        use(gestor);
+        String insertar="insert into pedidos (cliente,fecha,cantidad) values ("+p.getCliente()+",CURRENT_DATE,"+p.getCantidad()+");";
+        
+        String select="select count(id) from clientes where id="+p.getCliente();
         try {
-            Statement sta=gestor.createStatement();
-            sta.executeUpdate(insertar);
-            temp=true;
+            Statement stmt=gestor.createStatement();
+            ResultSet rs = stmt.executeQuery(select);
+            int numero=0;
+            if (rs.next()) {
+                numero=rs.getInt(1);     
+            }
+            if (numero==0) {
+                //no existe cliente 
+                existe=false;
+            }
             
-            sta.close();
+            stmt.close();
+            rs.close();
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        if (existe) {
+           try {
+                Statement sta=gestor.createStatement();
+                sta.executeUpdate(insertar);
+                temp=true;
+
+                sta.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+        }
+          
         return temp;
     }
     

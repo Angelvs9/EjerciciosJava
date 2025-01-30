@@ -4,6 +4,7 @@ package Vista;
 import BBDD.GestorConexion;
 import BBDD.Metodos;
 import static BBDD.Metodos.hacerPedido;
+import static BBDD.Metodos.use;
 import Modelo.Cliente;
 import Modelo.Pedido;
 import java.sql.PreparedStatement;
@@ -51,17 +52,17 @@ public class Repaso2Angel {
             sc.nextLine();
             switch (opcion) {
             case 1:
-                System.out.println("introduce nombre: ");
+                System.out.print("introduce nombre: ");
                 String nombre=sc.nextLine();
-                System.out.println("apellidos: ");
+                System.out.print("apellidos: ");
                 String apellidos=sc.nextLine();
-                System.out.println("DNI: ");
+                System.out.print("DNI: ");
                 String dni=sc.nextLine();
                 Cliente c=new Cliente(nombre, apellidos, dni);
                 if (Metodos.altaCliente(gestor.getConexion(),c)) {
-                    System.out.println("creado correctamente cliente "+c.getNombre()+" "+c.getApellidos()+"\n"+c.getDni());
+                    System.out.println("\n----------\ncreado correctamente cliente "+c.getNombre()+" "+c.getApellidos()+"\n"+c.getDni()+"\n----------\n");
                 }else{
-                    System.out.println("no se puedo crear cliente");
+                    System.out.println("\n----------\nno se puedo crear cliente\n----------\n");
                 }
 
                 break;
@@ -71,12 +72,13 @@ public class Repaso2Angel {
                     String delete = "DELETE FROM clientes WHERE id = ?";
                     Statement stm=gestor.getConexion().createStatement();
                     System.out.println("selecciona el id del cliente a eliminar:\n");
+                    use(gestor.getConexion());
                     ResultSet res=stm.executeQuery(queryClientes);
                     while (res.next()) {
                         int id=res.getInt("id");
                         String nombreCliente=res.getString("nombre");
                         String apellidosCliente=res.getString("apellidos");
-                        System.out.println("id: "+id+"nombre: "+nombreCliente+"apellidos: "+apellidosCliente);
+                        System.out.println("id: "+id+" nombre: "+nombreCliente+" apellidos: "+apellidosCliente);
                     }
                     int idCliente=sc.nextInt();
                     String consultaeliminarCliente = "DELETE FROM clientes WHERE id = " + idCliente;
@@ -102,27 +104,38 @@ public class Repaso2Angel {
                 
                 break;
             case 4:
-                try {     
+                try {
+                    use(gestor.getConexion());
+                    boolean hayclientes=false;
                     String consultaClientes="select id,nombre,apellidos from clientes";
                     Statement sta=gestor.getConexion().createStatement();
-                    System.out.println("selecciona un id:\n");
                     ResultSet rs=sta.executeQuery(consultaClientes);
                     while (rs.next()) {
+                        hayclientes=true;
                         int id=rs.getInt("id");
                         String nombreCliente=rs.getString("nombre");
                         String apellidosCliente=rs.getString("apellidos");
-                        System.out.println("id: "+id+"nombre: "+nombreCliente+"apellidos: "+apellidosCliente);
+                        System.out.println("id: "+id+" nombre: "+nombreCliente+" apellidos: "+apellidosCliente);
                     }
-                    int idCliente=sc.nextInt();
-                    sc.nextLine(); 
-                    System.out.println("cantidad de folios");
-                    int folios=sc.nextInt();
-                    System.out.println("introduce la fecha YYYY-MM-DD");
-                    String fecha = sc.nextLine();
                     
-                    Pedido p=new Pedido(idCliente,fecha,folios);
+                    if (hayclientes) {
+                        System.out.println("selecciona la id del cliente que quierre hacer el pedido:\n");
+                        int idCliente=sc.nextInt();
+                        sc.nextLine(); 
+                        System.out.println("cantidad de folios");
+                        int folios=sc.nextInt();
+                        Pedido p=new Pedido(idCliente,folios);
+
+                        if (hacerPedido(gestor.getConexion(),p)) {
+                            System.out.println("\n----------\nPedido de: "+folios+" folios realizado correctamente\n----------\n");
+                        }
+                        else{
+                            System.out.println("\n----------\nno se puedo realizar el pedido porque el cliente no existe\n----------\n");
+                        }
+                    }else{
+                        System.out.println("\n----------\nno hay clientes\n----------\n");
+                    }
                     
-                    hacerPedido(gestor.getConexion(),p);
                     
                 } catch (SQLException ex) {
                     Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
