@@ -3,6 +3,7 @@ package Vista;
 
 import BBDD.GestorConexion;
 import BBDD.Metodos;
+import static BBDD.Metodos.borrarPedidos;
 import static BBDD.Metodos.hacerPedido;
 import static BBDD.Metodos.use;
 import Modelo.Cliente;
@@ -42,12 +43,13 @@ public class Repaso2Angel {
         Scanner sc=new Scanner(System.in);
         int opcion=0;
         
-        while(opcion<5){
+        while(opcion<6){
             System.out.println("1-alta cliente");
             System.out.println("2-baja cliente");
             System.out.println("3-modificar cliente");
             System.out.println("4-hacer pedido");
-            System.out.println("5-salir");
+            System.out.println("5-cancelar pedido");
+            System.out.println("6-salir");
             opcion=sc.nextInt();
             sc.nextLine();
             switch (opcion) {
@@ -90,7 +92,8 @@ public class Repaso2Angel {
                         int filasAfectadas = psta.executeUpdate();
                         
                         if (filasAfectadas > 0) {
-                            System.out.println("Cliente con ID " + idCliente + " eliminado correctamente.");
+                            System.out.println("Cliente con ID " + idCliente + " eliminado correctamente junto a sus pedidos.");
+                            borrarPedidos(gestor.getConexion(),idCliente);
                         }
                         else{
                             System.out.println("\n----------\nno existe ese cliente\n----------\n");
@@ -107,7 +110,9 @@ public class Repaso2Angel {
                 
                 break;
             case 3:
-                System.out.println("modificar cliente");
+                //modificar cliente
+                
+                
                 
                 break;
             case 4:
@@ -151,6 +156,27 @@ public class Repaso2Angel {
                 break;
             
             case 5:
+                //cancelar pedido
+                use(gestor.getConexion());
+                String consulta = "SELECT p.codigo, p.fecha, p.cantidad, (SELECT c.nombre FROM clientes c WHERE c.id = p.cliente LIMIT 1) AS nombre, (SELECT c.apellidos FROM clientes c WHERE c.id = p.cliente LIMIT 1) AS apellidos FROM pedidos p;";
+
+                try {
+                    Statement sta=gestor.getConexion().createStatement();
+                    ResultSet rs=sta.executeQuery(consulta);
+                    while(rs.next()){
+                        System.out.println("Código: " + rs.getInt("codigo") + "\t" + "Fecha: " + rs.getString("fecha") + "\t" + "Cantidad: " + rs.getInt("cantidad") + "\t" + "Nombre: " + rs.getString("nombre") + "\t" + "Apellidos: " + rs.getString("apellidos"));
+                    }
+                    
+                } catch (SQLException ex) {
+                    Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+                //cancelarPedido(gestor.getConexion(),idPedido);
+                
+                break;
+                
+                
+            case 6:
                 System.out.println("Saliendo...");
                 break;
             }
