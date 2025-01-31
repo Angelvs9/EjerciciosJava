@@ -113,47 +113,19 @@ public class Metodos {
         return temp;
     }
     
-    public static boolean modificarCliente(Connection gestor,Cliente nuevoCliente,int idViejo){
+    public static boolean modificarCliente(Connection gestor,Cliente nuevocliente,int idCliente){
         boolean temp=false;
-        String insert="insert into clientes (nombre,apellidos,dni) values (?,?,?)";
-        
+        String updateCliente = "UPDATE Clientes SET dni=?,nombre=?,apellidos=? WHERE id=?";
+        String updatePedidos= "Update pedidos set cliente=? where cliente=?";
         try {
-
-            PreparedStatement psta=gestor.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
-            psta.setString(1,nuevoCliente.getNombre());
-            psta.setString(2, nuevoCliente.getApellidos());
-            psta.setString(3, nuevoCliente.getDni());
+            PreparedStatement psta=gestor.prepareStatement(updateCliente);
+            psta.setString(1, nuevocliente.getDni());
+            psta.setString(2, nuevocliente.getNombre());
+            psta.setString(3, nuevocliente.getApellidos());
+            psta.setInt(4, idCliente);
             psta.executeUpdate();
-            int idNuevoCliente=0;
-            ResultSet idrs=psta.getGeneratedKeys();
-            if (idrs.next()) {
-                idNuevoCliente=idrs.getInt(1);
-            }
-            
             psta.close();
-            idrs.close();
-            
-           
-            //ya está creado el nuevo cliente ,ahora guardarme sus pedidos con el idViejo
-            String consultaSelect ="select * from pedidos where cliente=?";
-            PreparedStatement pstmt=gestor.prepareStatement(consultaSelect);
-            pstmt.setInt(1, idViejo);
-            ResultSet rs=pstmt.executeQuery();
-            while(rs.next()){
-                int codigoPedido=rs.getInt("codigo");
-                Date fecha=rs.getDate("fecha");
-                int cantidad=rs.getInt("cantidad");
-                String insertarPedidos="insert into pedidos (codigo,cliente,fecha,cantidad) values (?,?,?,?)";
-                PreparedStatement ps=gestor.prepareStatement(insertarPedidos);
-                ps.setInt(1,codigoPedido);
-                ps.setInt(2,idNuevoCliente);
-                ps.setDate(3, fecha);
-                ps.setInt(4, cantidad);
-                ps.executeUpdate();  
-                temp=true;
-            }
-            rs.close();
-            pstmt.close();
+            temp=true;
             
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);

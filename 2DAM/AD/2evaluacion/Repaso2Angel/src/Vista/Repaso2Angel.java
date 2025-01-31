@@ -141,7 +141,11 @@ public class Repaso2Angel {
                     String Napellidos=sc.nextLine();
 
                     Cliente temp=new Cliente(Nnombre,Napellidos,Ndni);
-                    modificarCliente(gestor.getConexion(), temp,idViejo);
+                    if (modificarCliente(gestor.getConexion(), temp,idViejo)) {
+                        System.out.println("modificado correctamente\n");
+                    }else{
+                        System.out.println("no se ha podido modificar\n");
+                    }
                 }else{
                     System.out.println("no existen clientes que modificar");
                 }
