@@ -112,6 +112,7 @@ public class Repaso2Angel {
                 
                 break;
             case 3:
+                use(gestor.getConexion());
                 String queryClientes="select * from clientes";
                 boolean existen=false;
                 try {
@@ -127,20 +128,24 @@ public class Repaso2Angel {
                 } catch (SQLException ex) {
                     Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                if (existen) {
+                    //modificar cliente
+                    System.out.println("que cliente deseas modificar: (introduce el id)");
+                    int idViejo=sc.nextInt();
+                    sc.nextLine();
+                    System.out.println("nuevo dni: ");
+                    String Ndni =sc.nextLine();
+                    System.out.println("nuevo nomnbre: ");
+                    String Nnombre=sc.nextLine();
+                    System.out.println("nuevos apellidos: ");
+                    String Napellidos=sc.nextLine();
 
-                //modificar cliente
-                System.out.println("que cliente deseas modificar: (introduce el id)");
-                int idViejo=sc.nextInt();
-                sc.nextLine();
-                System.out.println("nuevo dni: ");
-                String Ndni =sc.nextLine();
-                System.out.println("nuevo nomnbre: ");
-                String Nnombre=sc.nextLine();
-                System.out.println("nuevos apellidos: ");
-                String Napellidos=sc.nextLine();
-                
-                Cliente temp=new Cliente(Nnombre,Napellidos,Ndni);
-                modificarCliente(gestor.getConexion(), temp,idViejo);
+                    Cliente temp=new Cliente(Nnombre,Napellidos,Ndni);
+                    modificarCliente(gestor.getConexion(), temp,idViejo);
+                }else{
+                    System.out.println("no existen clientes que modificar");
+                }
+
                 
                 break;
             case 4:
