@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -109,6 +110,44 @@ public class Metodos {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        return temp;
+    }
+    
+    public static boolean modificarCliente(Connection gestor,Cliente nuevoCliente,int idViejo){
+        boolean temp=false;
+        String insert="insert into clientes (nombre,apellidos,dni) values (?,?,?)";
+        String consultaSelect ="select * from pedidos where cliente="+idViejo;
+        
+        try {
+            PreparedStatement psta=gestor.prepareStatement(insert);
+            psta.setString(1,nuevoCliente.getNombre());
+            psta.setString(2, nuevoCliente.getApellidos());
+            psta.setString(3, nuevoCliente.getDni());
+            psta.executeUpdate();
+            int idNuevoCliente=0;
+            ResultSet idrs=psta.getGeneratedKeys();
+            if (idrs.next()) {
+                idNuevoCliente=idrs.getInt(1);
+            }
+            
+            Statement sta=gestor.createStatement();
+            ResultSet rs=sta.executeQuery(consultaSelect);
+            while(rs.next()){
+                int codigoPedido=rs.getInt("codigo");
+                Date fecha=rs.getDate("fecha");
+                int cantidad=rs.getInt("cantidad");
+                String insertarPedidos="insert into pedidos (codigo,cliente,fecha,cantidad) values ("+codigoPedido+","+idNuevoCliente+","+fecha+","+cantidad+")";
+                sta.execute(insertarPedidos);
+            }
+            psta.close();
+            sta.close();
+            rs.close();
+            idrs.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return temp;
     }
     

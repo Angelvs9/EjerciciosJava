@@ -6,6 +6,7 @@ import BBDD.Metodos;
 import static BBDD.Metodos.borrarPedidos;
 import static BBDD.Metodos.cancelarPedido;
 import static BBDD.Metodos.hacerPedido;
+import static BBDD.Metodos.modificarCliente;
 import static BBDD.Metodos.use;
 import Modelo.Cliente;
 import Modelo.Pedido;
@@ -111,9 +112,35 @@ public class Repaso2Angel {
                 
                 break;
             case 3:
+                String queryClientes="select * from clientes";
+                boolean existen=false;
+                try {
+                    Statement stm = gestor.getConexion().createStatement();
+                    ResultSet res=stm.executeQuery(queryClientes);
+                    while (res.next()) {
+                        int id=res.getInt("id");
+                        String nombreCliente=res.getString("nombre");
+                        String apellidosCliente=res.getString("apellidos");
+                        System.out.println("id: "+id+" nombre: "+nombreCliente+" apellidos: "+apellidosCliente);
+                        existen=true;
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(Repaso2Angel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
                 //modificar cliente
+                System.out.println("que cliente deseas modificar: (introduce el id)");
+                int idViejo=sc.nextInt();
+                sc.nextLine();
+                System.out.println("nuevo dni: ");
+                String Ndni =sc.nextLine();
+                System.out.println("nuevo nomnbre: ");
+                String Nnombre=sc.nextLine();
+                System.out.println("nuevos apellidos: ");
+                String Napellidos=sc.nextLine();
                 
-                
+                Cliente temp=new Cliente(Nnombre,Napellidos,Ndni);
+                modificarCliente(gestor.getConexion(), temp,idViejo);
                 
                 break;
             case 4:
