@@ -1,11 +1,14 @@
 package BBDD;
 
+import Modelo.Cliente;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -25,10 +28,9 @@ public class Metodos {
             String linea="";
             String consulta="";
             while((linea=br.readLine())!=null){
-                if (!linea.startsWith("-") && !linea.startsWith(" ")) {
+                if (!linea.startsWith("-") && !linea.isEmpty()) {
                     consulta+=linea;
                     if (consulta.endsWith(";")) {
-                        System.out.println(consulta);
                         sta.executeUpdate(consulta);
                         consulta="";
                     }
@@ -54,6 +56,37 @@ public class Metodos {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    public static boolean crearCliente(Connection conexion,Cliente c){
+        boolean temp=false;
+        boolean existe=false;
+        String query="select * from clientes where cnif='"+c.getCnif()+"';";
+        String insert="insert into clientes (cnombre,capellidos,cnif) values (?,?,?)";
+        try {
+            use(conexion);
+            Statement sta=conexion.createStatement();
+            ResultSet rs=sta.executeQuery(query);
+            if (rs.next()) {
+                existe=true;
+            }
+            sta.close();
+            rs.close();
+            
+            if (!existe) {
+                PreparedStatement psta=conexion.prepareStatement(insert);
+                psta.setString(1, c.getCnombre());
+                psta.setString(2, c.getCapellidos());
+                psta.setString(3, c.getCnif());
+                psta.executeUpdate();
+                psta.close();
+                temp=true;                
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return temp;
     }
     
     
