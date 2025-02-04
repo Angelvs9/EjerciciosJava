@@ -89,7 +89,23 @@ public class Metodos {
         return temp;
     }
     
-    
+    public static String datosCliente(Connection conexion,String nif){
+        String contenido="no existe usuario con ese nif";
+        String select="select * from cliente where nif='"+nif+"';";
+        try {
+            Statement sta =conexion.createStatement();
+            ResultSet rs=sta.executeQuery(select);
+            if (rs.next()) {
+                contenido="codigo: "+rs.getInt("ncodigo")+" nombre: "+rs.getString("cnombre")+" apellidos: "+rs.getString("capellidos"); 
+            }
+            rs.close();
+            sta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return contenido;
+    }
     
     
     
