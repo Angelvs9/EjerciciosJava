@@ -1,6 +1,8 @@
 package BBDD;
 
 import Modelo.Cliente;
+import static Modelo.CrearPDF.crear;
+import Modelo.Metadatos;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -107,6 +109,11 @@ public class Metodos {
         return contenido;
     }
     
+    private static void crearDocumento(Connection conexion,Metadatos m,int ncodigoCliente){
+        crear(m.getNombre(),m.getFecha(),"informacio sobre: "+m.getUsuario());
+        //ya existe el pdf y los metadatos
+        String select="select * from clientes";
     
+    }
     
 }
