@@ -7,7 +7,7 @@ import com.itextpdf.text.pdf.qrcode.ByteArray;
  *
  * @author Usuario
  */
-public class Metadatos extends Documento{
+public class Metadatos{
     private String nombre;
     private String fecha;
     private Cliente usuario;
@@ -15,8 +15,7 @@ public class Metadatos extends Documento{
     private double tamanyo ;
     private String nombrefichero;//nombre en si del fichero
 
-    public Metadatos(String nombre, String fecha, Cliente usuario, String ctipo, double tamanyo, String nombrefichero, int ncliente, ByteArray[] bdoc, Metadatos bmeta) {
-        super(ncliente, bdoc, bmeta);
+    public Metadatos(String nombre, String fecha, Cliente usuario, String ctipo, double tamanyo, String nombrefichero) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.usuario = usuario;
@@ -25,6 +24,19 @@ public class Metadatos extends Documento{
         this.nombrefichero = nombrefichero;
     }
 
+    public Metadatos(String nombre, String fecha, Cliente usuario, double tamanyo, String nombrefichero) {
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.usuario = usuario;
+        this.tamanyo = tamanyo;
+        this.nombrefichero = nombrefichero;
+        ctipo="pdf";
+    }
+
+    
+
+    
+    
     public String getNombre() {
         return nombre;
     }
