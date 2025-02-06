@@ -111,24 +111,24 @@ public class Metodos {
         use(c);
         File f=new File(nombrefichero+".pdf");
         try {
-            FileInputStream fis=new FileInputStream(f);
-            
-            String consulta="insert into documentos (ncliente,ctipo,bdoc,bmeta,cfichero) values (?,?,?,?,?)";
-            PreparedStatement psta=c.prepareStatement(consulta);
-            psta.setInt(1,getCodigo(c, cli.getCnif()));
-            psta.setString(2, m.getCtipo());
-            psta.setBinaryStream(3, fis);
-            
-            ByteArrayOutputStream byteArray=new ByteArrayOutputStream();
-            ObjectOutputStream oos=new ObjectOutputStream(byteArray);
-            oos.writeObject(m);
-            psta.setBytes(4,byteArray.toByteArray());
-            psta.setString(5,nombrefichero);
-            psta.execute();
-            temp=true;
-            psta.close();
-            fis.close();
-            oos.close();
+            if (!existeDocumento(c,cli)) {
+                FileInputStream fis=new FileInputStream(f);
+                String consulta="insert into documentos (ncliente,ctipo,bdoc,bmeta,cfichero) values (?,?,?,?,?)";
+                PreparedStatement psta=c.prepareStatement(consulta);
+                psta.setInt(1,getCodigo(c, cli.getCnif()));
+                psta.setString(2, m.getCtipo());
+                psta.setBinaryStream(3, fis);
+                ByteArrayOutputStream byteArray=new ByteArrayOutputStream();
+                ObjectOutputStream oos=new ObjectOutputStream(byteArray);
+                oos.writeObject(m);
+                psta.setBytes(4,byteArray.toByteArray());
+                psta.setString(5,nombrefichero);
+                psta.execute();
+                temp=true;
+                psta.close();
+                fis.close();
+                oos.close();
+            }
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
@@ -140,7 +140,20 @@ public class Metodos {
         return temp;
     
     }
-   
+    private static boolean existeDocumento(Connection c,Cliente cli){
+        boolean existe=false;
+        String consulta="select * from documentos where ncliente="+getCodigo(c, cli.getCnif());
+        try {
+            Statement sta =c.createStatement();
+            ResultSet rs=sta.executeQuery(consulta);
+            if (rs.next()) {
+                existe=true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return existe;
+    }
     
     
     

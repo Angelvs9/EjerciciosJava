@@ -31,7 +31,7 @@ public class Repaso3Angel {
         Conexion conexion=new Conexion();
         
         //CREACION DE LA BD
-        crearBD(conexion.getConexion(), "BBDD.sql");
+        //crearBD(conexion.getConexion(), "BBDD.sql");
         
         Cliente c1=new Cliente("paco","molina","1245764K");
         Cliente c2=new Cliente("pep","moliner","25418756L");
