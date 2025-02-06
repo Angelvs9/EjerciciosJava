@@ -15,7 +15,8 @@ public class Metadatos extends Documento{
     private double tamanyo ;
     private String nombrefichero;//nombre en si del fichero
 
-    public Metadatos(String nombre, String fecha, Cliente usuario, String ctipo, double tamanyo, String nombrefichero) {
+    public Metadatos(String nombre, String fecha, Cliente usuario, String ctipo, double tamanyo, String nombrefichero, int ncliente, ByteArray[] bdoc, Metadatos bmeta) {
+        super(ncliente, bdoc, bmeta);
         this.nombre = nombre;
         this.fecha = fecha;
         this.usuario = usuario;

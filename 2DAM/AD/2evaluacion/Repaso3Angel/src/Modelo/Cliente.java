@@ -9,6 +9,7 @@ public class Cliente {
     private String cnombre;
     private String capellidos;
     private String cnif;
+    private Documento [] documentos;
 
     public Cliente(String cnombre, String capellidos, String cnif) {
         this.cnombre = cnombre;
@@ -28,7 +29,5 @@ public class Cliente {
         return cnif;
     }
 
-    
-    
     
 }
