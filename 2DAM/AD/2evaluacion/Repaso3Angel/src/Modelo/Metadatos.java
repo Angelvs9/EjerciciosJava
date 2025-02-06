@@ -64,8 +64,7 @@ public class Metadatos implements Serializable{
 
     @Override
     public String toString() {
-        return "Metadatos{" + "nombre=" + nombre + ", fecha=" + fecha + ", usuario=" + usuario + ", ctipo=" + ctipo + ", tamanyo=" + tamanyo + ", nombrefichero=" + nombrefichero + '}';
+        return "Usuario{"+usuario+"Metadatos{" + "nombre=" + nombre + ", fecha=" + fecha + ", ctipo=" + ctipo + ", tamanyo=" + tamanyo + ", nombrefichero=" + nombrefichero + '}';
     }
-
-    
+  
 }

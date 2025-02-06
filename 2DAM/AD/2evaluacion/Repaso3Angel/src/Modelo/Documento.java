@@ -28,8 +28,6 @@ public class Documento {
         ctipo="pdf";
     }
 
-
-
     public int getNcliente() {
         return ncliente;
     }
