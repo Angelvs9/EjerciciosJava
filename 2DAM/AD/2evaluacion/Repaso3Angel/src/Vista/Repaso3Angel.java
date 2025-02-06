@@ -7,6 +7,13 @@ import static BBDD.Metodos.*;
 import Modelo.Cliente;
 import static Modelo.CrearPDF.crear;
 import Modelo.Metadatos;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.sql.Blob;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -24,7 +31,7 @@ public class Repaso3Angel {
         Conexion conexion=new Conexion();
         
         //CREACION DE LA BD
-        //crearBD(conexion.getConexion(), "BBDD.sql");
+        crearBD(conexion.getConexion(), "BBDD.sql");
         
         Cliente c1=new Cliente("paco","molina","1245764K");
         Cliente c2=new Cliente("pep","moliner","25418756L");
@@ -80,7 +87,53 @@ public class Repaso3Angel {
         if (insertarDocumentoCliente(conexion.getConexion(), c4, m4)) {
             System.out.println("Documento insertado para: " + c4.getCnombre());
         }
-
+        String imprimir="";
+        try {
+            String consulta="select * from documentos where ncliente=?;";
+            PreparedStatement pstmt=conexion.getConexion().prepareStatement(consulta);
+            pstmt.setInt(1, getCodigo(conexion.getConexion(), c1.getCnif()));
+            ResultSet rs=pstmt.executeQuery();
+            while (rs.next()) {
+                Blob b2=rs.getBlob("bmeta");
+                ObjectInputStream ois=new ObjectInputStream(b2.getBinaryStream());
+                Metadatos md=(Metadatos) ois.readObject();
+                imprimir+=md+"\n";
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Repaso3Angel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Repaso3Angel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Repaso3Angel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //imprimir datos de documentos
+        System.out.println(imprimir);
+        
+        
+        try {
+            String consulta="select * from documentos where ncliente=?;";
+            PreparedStatement pstmt=conexion.getConexion().prepareStatement(consulta);
+            pstmt.setInt(1, getCodigo(conexion.getConexion(), c1.getCnif()));
+            ResultSet rs=pstmt.executeQuery();
+            while (rs.next()) {
+                File f = new File("DESCARGADO " + rs.getString("cfichero") + "." + rs.getString("ctipo"));
+                FileOutputStream fos = new FileOutputStream(f);
+                Blob blob = rs.getBlob("bdoc");
+                byte[] data = blob.getBytes(1, (int)blob.length());
+         
+                fos.write(data);
+                fos.close();
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Repaso3Angel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Repaso3Angel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         
         
         conexion.cerrarConexion();

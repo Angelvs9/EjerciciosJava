@@ -73,8 +73,8 @@ public class Metodos {
         try {
             use(conexion);
             Statement sta=conexion.createStatement();
-            ResultSet rs=sta.executeQuery(query);
             int ncodigo=0;
+            ResultSet rs=sta.executeQuery(query);
             if (rs.next()) {
                 existe=true;
                 ncodigo=rs.getInt("ncodigo");
@@ -108,7 +108,7 @@ public class Metodos {
         //creo el pdf
         String nombrefichero=cli.getCnombre();
         crear(nombrefichero, cli.getCapellidos(), cli.getCnif());
-        
+        use(c);
         File f=new File(nombrefichero+".pdf");
         try {
             FileInputStream fis=new FileInputStream(f);
@@ -140,9 +140,13 @@ public class Metodos {
         return temp;
     
     }
+   
     
-    private static int getCodigo(Connection c,String nif){
+    
+    
+    public static int getCodigo(Connection c,String nif){
         int codigo=-1;
+        use(c);
         try {
             Statement sta=c.createStatement();
             ResultSet rs= sta.executeQuery("select ncodigo from clientes where cnif='"+nif+"';");
@@ -161,6 +165,7 @@ public class Metodos {
     public static String datosCliente(Connection conexion,String nif){
         String contenido="no existe usuario con ese nif";
         String select="select * from cliente where nif='"+nif+"';";
+        use(conexion);
         try {
             Statement sta =conexion.createStatement();
             ResultSet rs=sta.executeQuery(select);
@@ -179,6 +184,7 @@ public class Metodos {
     
     private static boolean existeCliente(Connection conexion,int ncodigo){
         boolean existe=false;
+        use(conexion);
         try {
             Statement sta=conexion.createStatement();
             ResultSet rs=sta.executeQuery("select * from clientes where ncodigo="+ncodigo+";");

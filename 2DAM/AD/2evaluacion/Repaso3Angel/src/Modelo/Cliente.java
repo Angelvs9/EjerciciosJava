@@ -11,7 +11,6 @@ public class Cliente implements Serializable{
     private String cnombre;
     private String capellidos;
     private String cnif;
-    private Documento [] documentos;
 
     public Cliente(String cnombre, String capellidos, String cnif) {
         this.cnombre = cnombre;
@@ -33,8 +32,11 @@ public class Cliente implements Serializable{
 
     @Override
     public String toString() {
-        return "Cliente{" + "cnombre=" + cnombre + ", capellidos=" + capellidos + ", cnif=" + cnif + ", documentos=" + documentos + '}';
+        return "\nCliente{" + "cnombre=" + cnombre + ", capellidos=" + capellidos + ", cnif=" + cnif + "}\n";
     }
+
+
+
 
     
 }

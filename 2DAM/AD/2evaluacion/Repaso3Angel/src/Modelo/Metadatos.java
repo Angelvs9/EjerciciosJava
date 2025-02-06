@@ -14,7 +14,7 @@ public class Metadatos implements Serializable{
     private String fecha;
     private Cliente usuario;
     private String ctipo;
-    private double tamanyo ;
+    private long tamanyo ;
     private String nombrefichero;//nombre en si del fichero
 
     public Metadatos(String nombre, String fecha, Cliente usuario, String ctipo,String nombrefichero) {
@@ -61,8 +61,6 @@ public class Metadatos implements Serializable{
     public String getNombrefichero() {
         return nombrefichero;
     }
-
-   
 
     @Override
     public String toString() {

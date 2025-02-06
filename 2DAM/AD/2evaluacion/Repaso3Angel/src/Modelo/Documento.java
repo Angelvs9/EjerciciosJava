@@ -2,6 +2,7 @@
 package Modelo;
 
 import com.itextpdf.text.pdf.qrcode.ByteArray;
+import java.sql.PreparedStatement;
 
 /**
  *
@@ -49,5 +50,5 @@ public class Documento {
     public String toString() {
         return "Documento{" + "ncliente=" + ncliente + ", ctipo=" + ctipo + ", bdoc=" + bdoc + ", bmeta=" + bmeta + '}';
     }
-  
+
 }
