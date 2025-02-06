@@ -5,9 +5,12 @@ import BBDD.Conexion;
 import BBDD.Metodos;
 import static BBDD.Metodos.*;
 import Modelo.Cliente;
+import static Modelo.CrearPDF.crear;
+import Modelo.Metadatos;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +24,7 @@ public class Repaso3Angel {
         Conexion conexion=new Conexion();
         
         //CREACION DE LA BD
-        crearBD(conexion.getConexion(), "BBDD.sql");
+        //crearBD(conexion.getConexion(), "BBDD.sql");
         
         Cliente c1=new Cliente("paco","molina","1245764K");
         Cliente c2=new Cliente("pep","moliner","25418756L");
@@ -56,6 +59,28 @@ public class Repaso3Angel {
         } catch (SQLException ex) {
             Logger.getLogger(Repaso3Angel.class.getName()).log(Level.SEVERE, null, ex);
         }
+        crear(c1.getCnombre(), c1.getCapellidos(), c1.getCnif());
+        crear(c2.getCnombre(), c2.getCapellidos(), c2.getCnif());
+        crear(c3.getCnombre(), c3.getCapellidos(), c3.getCnif());
+        crear(c4.getCnombre(), c4.getCapellidos(), c4.getCnif());
+        
+        Metadatos m1 = new Metadatos(c1.getCnombre(), LocalDate.now().toString(), c1, c1.getCnombre() + ".pdf");
+        Metadatos m2 = new Metadatos(c2.getCnombre(), LocalDate.now().toString(), c2, c2.getCnombre() + ".pdf");
+        Metadatos m3 = new Metadatos(c3.getCnombre(), LocalDate.now().toString(), c3, c3.getCnombre() + ".pdf");
+        Metadatos m4 = new Metadatos(c4.getCnombre(), LocalDate.now().toString(), c4, c4.getCnombre() + ".pdf");
+        if (insertarDocumentoCliente(conexion.getConexion(), c1, m1)) {
+            System.out.println("Documento insertado para: " + c1.getCnombre());
+        }
+        if (insertarDocumentoCliente(conexion.getConexion(), c2, m2)) {
+            System.out.println("Documento insertado para: " + c2.getCnombre());
+        }
+        if (insertarDocumentoCliente(conexion.getConexion(), c3, m3)) {
+            System.out.println("Documento insertado para: " + c3.getCnombre());
+        }
+        if (insertarDocumentoCliente(conexion.getConexion(), c4, m4)) {
+            System.out.println("Documento insertado para: " + c4.getCnombre());
+        }
+
         
         
         conexion.cerrarConexion();

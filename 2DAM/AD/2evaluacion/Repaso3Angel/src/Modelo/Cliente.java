@@ -1,11 +1,13 @@
 
 package Modelo;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Angel
  */
-public class Cliente {
+public class Cliente implements Serializable{
     private String cnombre;
     private String capellidos;
     private String cnif;
@@ -27,6 +29,11 @@ public class Cliente {
 
     public String getCnif() {
         return cnif;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" + "cnombre=" + cnombre + ", capellidos=" + capellidos + ", cnif=" + cnif + ", documentos=" + documentos + '}';
     }
 
     

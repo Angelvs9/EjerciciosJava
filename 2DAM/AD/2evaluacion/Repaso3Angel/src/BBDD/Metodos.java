@@ -90,9 +90,6 @@ public class Metodos {
                 psta.setString(3, c.getCnif());
                 psta.executeUpdate();
                 psta.close();
-                
-                
-                insertarDocumentoCliente(conexion,c);
                 temp=true;                
             }
             else{
@@ -128,7 +125,7 @@ public class Metodos {
             psta.setBytes(4,byteArray.toByteArray());
             psta.setString(5,nombrefichero);
             psta.execute();
-            
+            temp=true;
             psta.close();
             fis.close();
             oos.close();
@@ -148,9 +145,9 @@ public class Metodos {
         int codigo=-1;
         try {
             Statement sta=c.createStatement();
-            ResultSet rs= sta.executeQuery("select ncodigo from clientes where cnif="+nif+";");
+            ResultSet rs= sta.executeQuery("select ncodigo from clientes where cnif='"+nif+"';");
             if (rs.next()) {
-                codigo=rs.getInt("nif");
+                codigo=rs.getInt("ncodigo");
             }
             rs.close();
             sta.close();
