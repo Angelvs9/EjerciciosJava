@@ -18,7 +18,8 @@ public class Repaso2evAngel {
         System.out.println(numeroCanal1);
         //bfoto es la foto 
          
-        Serie startrek= new Serie(1, "startrek", "accion", 1999, bfoto, numeroCanal1, "startrek.jpg");
+        //creo que la serie con todo menos la foto y ya dentro del metodo de insertar la serie le meto la foto con el setter
+        Serie startrek= new Serie(1, "startrek", "accion", 1999, numeroCanal1, "startrek.jpg");
         
         
         conexion.cerrar();

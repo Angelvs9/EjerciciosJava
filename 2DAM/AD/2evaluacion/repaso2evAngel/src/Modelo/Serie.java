@@ -16,15 +16,20 @@ public class Serie {
     private int ncanal;
     private String cfoto;
 
-    public Serie(int ncodigo, String ctitulo, String cgenero, int nanyo, Blob bfoto, int ncanal, String cfoto) {
+    public Serie(int ncodigo, String ctitulo, String cgenero, int nanyo, int ncanal, String cfoto) {
         this.ncodigo = ncodigo;
         this.ctitulo = ctitulo;
         this.cgenero = cgenero;
         this.nanyo = nanyo;
-        this.bfoto = bfoto;
         this.ncanal = ncanal;
         this.cfoto = cfoto;
     }
+
+    public void setBfoto(Blob bfoto) {
+        this.bfoto = bfoto;
+    }
+    
+    
 
     public int getNcodigo() {
         return ncodigo;
