@@ -16,10 +16,12 @@ public class Repaso2evAngel {
         Canal c1=new Canal("hbo",4,6);
         int numeroCanal1=crearCanal(conexion.getConexion(), c1);
         System.out.println(numeroCanal1);
+        
         //bfoto es la foto 
          
-        //creo que la serie con todo menos la foto y ya dentro del metodo de insertar la serie le meto la foto con el setter
+        //primero creo que la serie con todo menos la foto y ya dentro del metodo de insertar la serie le meto la foto con el setter
         Serie startrek= new Serie(1, "startrek", "accion", 1999, numeroCanal1, "startrek.jpg");
+        crearSerie(conexion.getConexion(),startrek);
         
         
         conexion.cerrar();

@@ -5,6 +5,7 @@ import Modelo.Canal;
 import Modelo.Serie;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -86,6 +89,32 @@ public class Metodos {
         return -1;
     }
     public static boolean crearSerie(Connection conexion,Serie s){
+        File file=new File(s.getCfoto());
+        try {
+            FileInputStream fis=new FileInputStream(file);
+            String insert="insert into series (ncodigo,ctitulo,cgenero,nanyo,bfoto,ncanal,cfoto) values (?,?,?,?,?,?,?)";
+            
+            PreparedStatement psta=conexion.prepareStatement(insert);
+            psta.setInt(1, s.getNcodigo());
+            psta.setString(2, s.getCtitulo());
+            psta.setString(3, s.getCgenero());
+            psta.setInt(4, s.getNanyo());
+            //el 5 es la foto
+            psta.setBinaryStream(5, fis);
+            psta.setInt(6,s.getNcanal());
+            psta.setString(7, s.getCfoto());
+            psta.executeUpdate();
+            psta.close();
+            fis.close();
+            return true;
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
         return false;
