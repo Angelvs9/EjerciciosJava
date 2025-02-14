@@ -25,7 +25,7 @@ public class Protagonista implements Serializable{
         this.nedad = nedad;
         this.nserie = nserie;
         this.ccurriculum = ccurriculum;
-        this.insertarCV(cnombre+".pdf");
+        this.insertarCV(ccurriculum);
     }
 
     public void insertarCV(String nombreCV){
