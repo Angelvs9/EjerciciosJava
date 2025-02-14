@@ -28,6 +28,14 @@ public class Protagonista implements Serializable{
         this.insertarCV(ccurriculum);
     }
 
+    public Protagonista(int ncodigo, String cnombre, int nedad, int nserie) {
+        this.ncodigo = ncodigo;
+        this.cnombre = cnombre;
+        this.nedad = nedad;
+        this.nserie = nserie;
+    }
+    
+    
     public void insertarCV(String nombreCV){
         try {
             File f=new File(nombreCV);

@@ -23,8 +23,15 @@ public class Repaso2evAngel {
             Statement sta=conexion.createStatement();
             ResultSet rs=sta.executeQuery(select);
             while(rs.next()){
+                System.out.println("-------------------------------------------------------------------");
                 Canal canal=new Canal(rs.getString("cnombreCanales"),rs.getInt("nprecioCanales"),rs.getInt("nseriesCanales") );
                 System.out.println(canal.toString());
+                Serie serie = new Serie(rs.getInt("ncodigoSeries"), rs.getString("ctituloSeries"), rs.getString("cgeneroSeries"), rs.getInt("nanyoSeries"), 0, null);//null porque no quiero mostrar la foto pero para crear el obejto le tengo que poner algo
+                System.out.println("\t"+serie.toString());
+                Protagonista protagonista = new Protagonista(rs.getInt("ncodigoProtagonistas"), rs.getString("cnombreProtagonistas"), rs.getInt("nedadProtagonistas"), rs.getInt("ncodigoSeries"));
+                System.out.println("\t\t"+protagonista.toString());
+                System.out.println("-------------------------------------------------------------------");
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(Repaso2evAngel.class.getName()).log(Level.SEVERE, null, ex);
