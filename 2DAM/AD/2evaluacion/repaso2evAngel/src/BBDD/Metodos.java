@@ -2,6 +2,7 @@
 package BBDD;
 
 import Modelo.Canal;
+import Modelo.Protagonista;
 import Modelo.Serie;
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -73,7 +75,7 @@ public class Metodos {
             psta.setString(1, c.getCnombre());
             psta.setInt(2, c.getNprecio());
             psta.setInt(3, c.getNseries());
-            psta.executeUpdate();
+            psta.execute();
             ResultSet rs=psta.getGeneratedKeys();
             if (rs.next()) {
                 ncodigo=rs.getInt(1);
@@ -88,8 +90,9 @@ public class Metodos {
         }
         return -1;
     }
-    public static boolean crearSerie(Connection conexion,Serie s){
+    public static int crearSerie(Connection conexion,Serie s){
         File file=new File(s.getCfoto());
+        use(conexion);
         try {
             FileInputStream fis=new FileInputStream(file);
             String insert="insert into series (ncodigo,ctitulo,cgenero,nanyo,bfoto,ncanal,cfoto) values (?,?,?,?,?,?,?)";
@@ -106,7 +109,7 @@ public class Metodos {
             psta.executeUpdate();
             psta.close();
             fis.close();
-            return true;
+            return s.getNcodigo();
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
@@ -117,7 +120,28 @@ public class Metodos {
         }
         
         
-        return false;
+        return -1;
     }
+    public static boolean crearProtagonista(Connection conexion,Protagonista p){
+        use(conexion);
+        try {
+            String insert="insert into protagonistas (ncodigo,cnombre,nedad,bcurriculum,nserie,ccurriculum) values (?,?,?,?,?,?);";
+            PreparedStatement psta=conexion.prepareStatement(insert);
+            psta.setInt(1, p.getNcodigo());
+            psta.setString(2, p.getCnombre());
+            psta.setInt(3, p.getNedad());
+            //este es el pdf cv
+            psta.setBytes(4, p.getBcurriculum());
+            psta.setInt(5, p.getNserie());
+            psta.setString(6, p.getCcurriculum());
+            psta.executeUpdate();
+            psta.close();
+            return true;
+        } catch (SQLException ex ) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     
+        return false;
+    
+    }
 }

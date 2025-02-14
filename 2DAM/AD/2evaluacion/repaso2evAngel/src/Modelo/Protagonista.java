@@ -1,26 +1,55 @@
 
 package Modelo;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
 import java.sql.Blob;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
-public class Protagonista {
+public class Protagonista implements Serializable{
     private int ncodigo;//no es autonumerica
     private String cnombre;
     private int nedad;
-    private Blob bcurriculum;//pdf
+    private byte[] bcurriculum;//pdf
     private int nserie;
     private String ccurriculum;
 
-    public Protagonista(int ncodigo, String cnombre, int nedad, Blob bcurriculum, int nserie, String ccurriculum) {
+    public Protagonista(int ncodigo, String cnombre, int nedad, int nserie, String ccurriculum) {
         this.ncodigo = ncodigo;
         this.cnombre = cnombre;
         this.nedad = nedad;
-        this.bcurriculum = bcurriculum;
         this.nserie = nserie;
         this.ccurriculum = ccurriculum;
+        this.insertarCV(cnombre+".pdf");
     }
 
+    public void insertarCV(String nombreCV){
+        try {
+            File f=new File(nombreCV);
+            bcurriculum=new byte[(int)f.length()];
+            FileInputStream fis=new FileInputStream(f);
+            fis.read(bcurriculum);
+            fis.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Protagonista.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Protagonista.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public byte[] getBcurriculum() {
+        return bcurriculum;
+    }
+    
+    public String getCcurriculum() {
+        return ccurriculum;
+    }
+    
     public int getNcodigo() {
         return ncodigo;
     }
@@ -31,10 +60,6 @@ public class Protagonista {
 
     public int getNedad() {
         return nedad;
-    }
-
-    public Blob getBcurriculum() {
-        return bcurriculum;
     }
 
     public int getNserie() {
@@ -53,9 +78,10 @@ public class Protagonista {
         this.nedad = nedad;
     }
 
-    public void setBcurriculum(Blob bcurriculum) {
+    public void setBcurriculum(byte[] bcurriculum) {
         this.bcurriculum = bcurriculum;
     }
+
 
     public void setNserie(int nserie) {
         this.nserie = nserie;
