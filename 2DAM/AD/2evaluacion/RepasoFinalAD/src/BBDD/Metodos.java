@@ -46,20 +46,25 @@ public class Metodos {
         
     }
     
-    public static void crearParroquias(Connection conexion,Parroquia p){
+    public static boolean crearParroquias(Connection conexion,Parroquia p){
         try {
-            PreparedStatement psta=conexion.prepareStatement("insert into parroquias (ncodigo,cnombre,cdireccion,csacerdote) values (?,?,?,?)");
+            String temp="insert into parroquias (ncodigo,cnombre,cdireccion,csacerdote) values (?,?,?,?)";
+            PreparedStatement psta=conexion.prepareStatement(temp);
             psta.setInt(1, p.getNcodigo());
             psta.setString(2, p.getCnombre());
             psta.setString(3,p.getCdireccion());
             psta.setString(4, p.getCsacerdote());
-            psta.executeUpdate();
+            psta.execute();
             psta.close();
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        return false;
     }
+    
+    
+    
     
     
     
