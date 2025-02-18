@@ -1,0 +1,12 @@
+Canal{cnombre=hbo, nprecio=4, nseries=6}
+	Canal{cnombre=hbo, nprecio=4, nseries=6}
+		Protagonista{ncodigo=2, cnombre=mat, nedad=19, nserie=1}
+
+Canal{cnombre=hbo, nprecio=4, nseries=6}
+	Canal{cnombre=hbo, nprecio=4, nseries=6}
+		Protagonista{ncodigo=3, cnombre=david, nedad=59, nserie=1}
+
+Canal{cnombre=netflix, nprecio=2, nseries=4}
+	Canal{cnombre=netflix, nprecio=2, nseries=4}
+		Protagonista{ncodigo=1, cnombre=will, nedad=29, nserie=2}
+

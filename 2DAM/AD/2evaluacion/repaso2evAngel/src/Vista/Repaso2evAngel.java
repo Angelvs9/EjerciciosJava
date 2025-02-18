@@ -5,12 +5,16 @@ import static BBDD.Metodos.*;
 import Modelo.Canal;
 import Modelo.Protagonista;
 import Modelo.Serie;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdk.jfr.events.FileWriteEvent;
 /**
  * @author Usuario
  */
@@ -18,24 +22,34 @@ public class Repaso2evAngel {
 
     private static String mostrarDatos(Connection conexion){
         String resultado="";
+        File f=new File("resultado.txt");
+        
         String select="select canales.ncodigo as codigoCanales, canales.cnombre as cnombreCanales , canales.nprecio as nprecioCanales, canales.nseries as nseriesCanales, series.ncodigo as ncodigoSeries, series.ctitulo as ctituloSeries, series.cgenero as cgeneroSeries, series.nanyo as nanyoSeries, protagonistas.ncodigo as ncodigoProtagonistas, protagonistas.cnombre as cnombreProtagonistas, protagonistas.nedad as nedadProtagonistas from series inner join canales on canales.ncodigo=series.ncanal inner join protagonistas on series.ncodigo=protagonistas.nserie;";
         try {
-            int codigoCanalantiguo=0;
+            FileWriter fw=new FileWriter(f,true);
             Statement sta=conexion.createStatement();
             ResultSet rs=sta.executeQuery(select);
             while(rs.next()){
                 System.out.println("-------------------------------------------------------------------");
                 Canal canal=new Canal(rs.getString("cnombreCanales"),rs.getInt("nprecioCanales"),rs.getInt("nseriesCanales") );
-                codigoCanalantiguo=rs.getInt("codigoCanales");
                 System.out.println(canal.toString());
+                fw.write(canal.toString()+"\n");
+                
                 Serie serie = new Serie(rs.getInt("ncodigoSeries"), rs.getString("ctituloSeries"), rs.getString("cgeneroSeries"), rs.getInt("nanyoSeries"), 0, null);//null porque no quiero mostrar la foto pero para crear el obejto le tengo que poner algo
                 System.out.println("\t"+serie.toString());
+                fw.write("\t"+canal.toString()+"\n");
                 Protagonista protagonista = new Protagonista(rs.getInt("ncodigoProtagonistas"), rs.getString("cnombreProtagonistas"), rs.getInt("nedadProtagonistas"), rs.getInt("ncodigoSeries"));
                 System.out.println("\t\t"+protagonista.toString());
+                fw.write("\t\t"+protagonista.toString()+"\n\n");
                 System.out.println("-------------------------------------------------------------------");
                 
             }
+            fw.close();
+            rs.close();
+            sta.close();
         } catch (SQLException ex) {
+            Logger.getLogger(Repaso2evAngel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(Repaso2evAngel.class.getName()).log(Level.SEVERE, null, ex);
         }
         
