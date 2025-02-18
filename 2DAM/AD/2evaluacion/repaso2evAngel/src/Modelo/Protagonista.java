@@ -101,10 +101,7 @@ public class Protagonista implements Serializable{
 
     @Override
     public String toString() {
-        return "Protagonista{" + "ncodigo=" + ncodigo + ", cnombre=" + cnombre + ", nedad=" + nedad + ", bcurriculum=" + bcurriculum + ", nserie=" + nserie + ", ccurriculum=" + ccurriculum + '}';
+        return "Protagonista{" + "ncodigo=" + ncodigo + ", cnombre=" + cnombre + ", nedad=" + nedad + ", nserie=" + nserie + '}';
     }
-    
-        
-    
-    
+ 
 }
