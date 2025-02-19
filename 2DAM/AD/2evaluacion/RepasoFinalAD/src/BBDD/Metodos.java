@@ -4,9 +4,17 @@ package BBDD;
 import Modelo.Cofrades;
 import Modelo.Cofradia;
 import Modelo.Parroquia;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -115,4 +123,51 @@ public class Metodos {
         }
         return codigo;
     }
+    
+    public static void hacerPDF(Connection conexion){
+        String select="select parroquias.*,cofradias.*,cofrades.* from cofradias "
+                + "left join parroquias on parroquias.ncodigo=cofradias.nparroquia "
+                + "left join cofrades on cofrades.ncofradia=cofradias.ncodigo";
+        
+        try {
+            PreparedStatement psta=conexion.prepareStatement(select);
+            Document documento =new Document();
+            FileOutputStream ficheroPDF=new FileOutputStream("iglesia.PDF");
+            
+            PdfWriter.getInstance(documento,ficheroPDF);
+            
+            documento.open();
+            Paragraph titulo=new Paragraph("IGLESIAS\n\n");
+            titulo.setAlignment(Element.ALIGN_CENTER);
+            documento.add(titulo);
+            ResultSet rs= psta.executeQuery();
+            while(rs.next()){
+                //pongo numeros y así no tengo que poner as
+                Paragraph temp=new Paragraph("Parroquias{codigo de la parroquia:"+rs.getInt(1)+"\nnombre parroquia:"+rs.getString(2)+"\ndireccion: "+rs.getString(3)+"\npadre a cargo: "+rs.getString(4)+"}\n\n");
+                documento.add(temp);
+                byte[] imagenBytes = rs.getBytes(8); 
+                Image imagen = Image.getInstance(imagenBytes);
+                imagen.scaleToFit(200, 200);
+                Paragraph temp2=new Paragraph("\tCofradias{codigo de la cofradia:"+rs.getInt(5)+"\nnombre cofradia:"+rs.getString(6)+"\ndireccion: "+rs.getString(7)+"\ncodigo de la parroquia "+rs.getInt(10));
+                documento.add(temp2);
+                documento.add(imagen);
+                Paragraph temp3=new Paragraph("}\n\nCofrades{codigo de la cofrades:"+rs.getInt(11)+"\nncofradia"+rs.getInt(12)+"\nnombre cofrades:"+rs.getString(13)+"\napellidos: "+rs.getString(14)+"\ntelefono: "+rs.getString(15)+"\nnedad "+rs.getString(16)+"}\n");
+                documento.add(temp3);
+                documento.add(new Paragraph("\n_________________________________________________\n"));
+            }
+            documento.close();
+            rs.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+
+    }
+    
 }

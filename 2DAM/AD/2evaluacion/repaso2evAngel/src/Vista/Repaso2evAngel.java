@@ -26,7 +26,7 @@ public class Repaso2evAngel {
         
         String select="select canales.ncodigo as codigoCanales, canales.cnombre as cnombreCanales , canales.nprecio as nprecioCanales, canales.nseries as nseriesCanales, series.ncodigo as ncodigoSeries, series.ctitulo as ctituloSeries, series.cgenero as cgeneroSeries, series.nanyo as nanyoSeries, protagonistas.ncodigo as ncodigoProtagonistas, protagonistas.cnombre as cnombreProtagonistas, protagonistas.nedad as nedadProtagonistas from series inner join canales on canales.ncodigo=series.ncanal inner join protagonistas on series.ncodigo=protagonistas.nserie;";
         try {
-            FileWriter fw=new FileWriter(f,true);
+            FileWriter fw=new FileWriter(f);
             Statement sta=conexion.createStatement();
             ResultSet rs=sta.executeQuery(select);
             while(rs.next()){

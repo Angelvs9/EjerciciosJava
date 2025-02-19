@@ -37,6 +37,7 @@ public class RepasoFinalAD {
         gestorConexion conexion= new gestorConexion();
         String bd="juntisima";
         //así solo lo uso una vez y no tengo que llamarlo dentro de cada metodo
+        
         //crearBD(conexion.getConexion(), "BBDD.sql");
         
         conexion.use(bd);
@@ -66,8 +67,8 @@ public class RepasoFinalAD {
         
         System.out.println("CREADAS COFRADIAS");
         
-        
-        
+        hacerPDF(conexion.getConexion());
+        System.out.println("PDF HECHO");
         
         
         conexion.cerrar();
