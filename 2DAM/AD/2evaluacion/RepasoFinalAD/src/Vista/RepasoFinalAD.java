@@ -2,15 +2,37 @@ package Vista;
 
 import static BBDD.Metodos.*;
 import BBDD.gestorConexion;
+import Modelo.Cofradia;
 import Modelo.Parroquia;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * @author Usuario
  */
 public class RepasoFinalAD {
-
-    /**
-     * @param args the command line arguments
-     */
+    
+    public static byte[] meterfoto(Connection conexion,String nombreFoto){
+        byte[] b = new byte[(int)new File(nombreFoto).length()];
+        try {
+            FileInputStream fis=new FileInputStream(new File(nombreFoto));
+            fis.read(b);
+            fis.close();
+            return b;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(RepasoFinalAD.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(RepasoFinalAD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       return b;
+    }
+    
+    
+    
     public static void main(String[] args) {
         gestorConexion conexion= new gestorConexion();
         String bd="juntisima";
@@ -32,6 +54,8 @@ public class RepasoFinalAD {
         
         System.out.println("CREADAS PARROQUIAS");
         
+        Cofradia cofra1=new Cofradia(1,"nombre","direccion","1.JPG",meterfoto(conexion.getConexion(), "1.JPG"),parroquia1.getNcodigo());
+        crearCofradias(conexion.getConexion(), cofra1, parroquia1.getNcodigo());
         
         
         conexion.cerrar();

@@ -1,6 +1,7 @@
 
 package BBDD;
 
+import Modelo.Cofradia;
 import Modelo.Parroquia;
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,13 +66,30 @@ public class Metodos {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
+    public static int crearCofradias(Connection conexion,Cofradia cofra,int codigoParroquia){
+        int codigo=-1;
+        String insert="insert into cofradias (cnombre,cdireccion,bfoto,cfichero,nparroquia) values (?,?,?,?,?);";
+        try {
+            PreparedStatement psta=conexion.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
+            psta.setString(1, cofra.getCnombre());
+            psta.setBytes(3, cofra.getBfoto());
+            psta.setString(2, cofra.getCdireccion());
+            psta.setString(4, cofra.getCfichero());
+            psta.setInt(5,codigoParroquia);
+            psta.executeUpdate();
+            ResultSet rs=psta.getGeneratedKeys();
+            if (rs.next()) {
+                codigo=rs.getInt(1);
+            }
+            rs.close();
+            psta.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return codigo;
+    }
     
     
 }
