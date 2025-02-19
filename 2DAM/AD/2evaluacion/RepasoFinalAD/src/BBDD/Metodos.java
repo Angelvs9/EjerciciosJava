@@ -1,6 +1,7 @@
 
 package BBDD;
 
+import Modelo.Cofrades;
 import Modelo.Cofradia;
 import Modelo.Parroquia;
 import java.io.BufferedReader;
@@ -81,6 +82,7 @@ public class Metodos {
             if (rs.next()) {
                 codigo=rs.getInt(1);
             }
+            cofra.setNcodigo(codigo);
             rs.close();
             psta.close();
             
@@ -91,5 +93,26 @@ public class Metodos {
         return codigo;
     }
     
-    
+    public static int crearCofrades(Connection conexion,Cofrades cofrade){
+        int codigo=-1;
+        String insert="insert into cofrades (ncofradia,cnombre,capellidos,ctelefono,nedad) values (?,?,?,?,?);";
+        try {
+            PreparedStatement psta=conexion.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
+            psta.setString(2, cofrade.getCnombre());
+            psta.setString(3, cofrade.getCapellidos());
+            psta.setString(4, cofrade.getCtelefono());
+            psta.setInt(5, cofrade.getNedad());
+            psta.executeUpdate();
+            ResultSet rs=psta.getGeneratedKeys();
+            if (rs.next()) {
+                codigo=rs.getInt(1);
+            }
+            cofrade.setNcodigo(codigo);
+            rs.close();
+            psta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return codigo;
+    }
 }

@@ -21,6 +21,16 @@ public class Cofradia {
         this.nparroquia = nparroquia;
     }
 
+    public Cofradia(String cnombre, String cdireccion, String cfichero, byte[] bfoto, int nparroquia) {
+        this.cnombre = cnombre;
+        this.cdireccion = cdireccion;
+        this.cfichero = cfichero;
+        this.bfoto = bfoto;
+        this.nparroquia = nparroquia;
+    }
+    
+    
+
     public int getNcodigo() {
         return ncodigo;
     }

@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  */
 public class RepasoFinalAD {
     
-    public static byte[] meterfoto(Connection conexion,String nombreFoto){
+    public static byte[] fotoAByte(Connection conexion,String nombreFoto){
         byte[] b = new byte[(int)new File(nombreFoto).length()];
         try {
             FileInputStream fis=new FileInputStream(new File(nombreFoto));
@@ -54,8 +54,20 @@ public class RepasoFinalAD {
         
         System.out.println("CREADAS PARROQUIAS");
         
-        Cofradia cofra1=new Cofradia(1,"nombre","direccion","1.JPG",meterfoto(conexion.getConexion(), "1.JPG"),parroquia1.getNcodigo());
-        crearCofradias(conexion.getConexion(), cofra1, parroquia1.getNcodigo());
+        byte [] foto;
+        foto=fotoAByte(conexion.getConexion(), "1.JPG");
+        Cofradia cofra1=new Cofradia("nombre","direccion","1.JPG",foto,parroquia1.getNcodigo());
+        int codigoCofradia1=crearCofradias(conexion.getConexion(), cofra1, parroquia1.getNcodigo());
+        
+        foto=fotoAByte(conexion.getConexion(), "2.JPG");
+        Cofradia cofra2=new Cofradia("nombre2","direccion2","2.JPG",foto,parroquia2.getNcodigo());
+        int codigoCofradia2=crearCofradias(conexion.getConexion(), cofra2, parroquia1.getNcodigo());
+        
+        
+        System.out.println("CREADAS COFRADIAS");
+        
+        
+        
         
         
         conexion.cerrar();
