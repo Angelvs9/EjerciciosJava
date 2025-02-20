@@ -86,6 +86,16 @@ public class RepasoFinalAD {
         hacerCSV(conexion.getConexion());
         System.out.println("CSV HECHO");
         
+        
+        //mostrar por pantalla
+        System.out.println(mostrar(conexion.getConexion()));
+        
+        
+        
+        
+        
+        
+        
         conexion.cerrar();
     }
     

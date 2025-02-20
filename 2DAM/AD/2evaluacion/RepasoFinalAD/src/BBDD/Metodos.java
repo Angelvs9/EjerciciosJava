@@ -210,7 +210,7 @@ public class Metodos {
         try {
             Statement sta=conexion.createStatement();
             ResultSet rs=sta.executeQuery(consulta);
-            FileWriter fw=new FileWriter(new File("IGLESIA.csv"));
+            FileWriter fw=new FileWriter(new File("iglesia.csv"));
             fw.write(cabezera+"\n");
             while(rs.next()){
                 fw.write(rs.getInt("codigoParroquia") + ";");
@@ -229,6 +229,7 @@ public class Metodos {
                 fw.write(rs.getString(13) + ";");
                 fw.write(rs.getString(14) + ";");
                 fw.write(rs.getString(15) + ";");
+                //este ultimo es la edad
                 fw.write("\n");
             }
             fw.close();
@@ -247,6 +248,34 @@ public class Metodos {
         
     
     }
+    
+    public static String mostrar(Connection conexion){
+        String resultado="";
+        //hay 15
+        String linea="";
+        try {
+            BufferedReader br=new BufferedReader(new FileReader(new File("iglesia.csv")));
+            br.readLine();
+            //salto primera linea que es la cabezera del csv
+            while((linea=br.readLine())!=null){
+                String [] partes=linea.split(";");
+                resultado+="|"+partes[0]+" | "+partes[1]+" | "+partes[2]+" | "+partes[3]+" | "+partes[4]+" | "+partes[5]+" | "
+                        +partes[6]+" | "+partes[7]+" | " +partes[8]+" | "+partes[9]+" | "
+                        +partes[10]+" | "+partes[11]+" | " +partes[12]+" | "+partes[13]+ " | "+partes[14]+"\n";
+            }
+               
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+        
+        
+        return resultado;
+    }
+    
     
     
     
