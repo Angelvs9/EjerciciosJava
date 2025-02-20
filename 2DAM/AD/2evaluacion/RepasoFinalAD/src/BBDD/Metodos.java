@@ -105,8 +105,26 @@ public class Metodos {
         int codigo=-1;
         String insert="insert into cofrades (ncofradia,cnombre,capellidos,ctelefono,nedad) values (?,?,?,?,?);";
         try {
+            if (cofrade.getNcofradia()<=0) {
+                //no existe
+                String select="select * from cofradias order by ncodigo desc limit 1;";
+                //pillo la ultima cofradia
+                int codigocofradia=-1;
+                Statement sta=conexion.createStatement();
+                ResultSet rs=sta.executeQuery(select);
+                if (rs.next()) {
+                    codigocofradia=rs.getInt("ncodigo");
+                    //pillo el codigo de la ultima cofradia
+                }
+                //aqui le pongo el nuevo numero de la cofradia que se lo asigno al ultimo por defecto si no existe 
+                // porque hay dos constructores uno si le pone y otro si no rellenas el ncofradia
+                cofrade.setNcofradia(codigocofradia);
+                rs.close();
+                sta.close();
+            }
+            //si ha entrado arriba tiene el ultimo ncofradia si no es el que tenga el objeto por defecto
             PreparedStatement psta=conexion.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
-            psta.setInt(1, cofrade.getNcodigo());
+            psta.setInt(1, cofrade.getNcofradia());
             psta.setString(2, cofrade.getCnombre());
             psta.setString(3, cofrade.getCapellidos());
             psta.setString(4, cofrade.getCtelefono());
@@ -152,7 +170,7 @@ public class Metodos {
                 Paragraph temp2=new Paragraph("\tCofradias{codigo de la cofradia:"+rs.getInt(5)+"\nnombre cofradia:"+rs.getString(6)+"\ndireccion: "+rs.getString(7)+"\ncodigo de la parroquia "+rs.getInt(10));
                 documento.add(temp2);
                 documento.add(imagen);
-                Paragraph temp3=new Paragraph("}\n\nCofrades{codigo de la cofrades:"+rs.getInt(11)+"\nncofradia"+rs.getInt(12)+"\nnombre cofrades:"+rs.getString(13)+"\napellidos: "+rs.getString(14)+"\ntelefono: "+rs.getString(15)+"\nnedad "+rs.getString(16)+"}\n");
+                Paragraph temp3=new Paragraph("}\n\nCofrades{codigo de la cofrades: "+rs.getInt(11)+"\nncofradia: "+rs.getInt(12)+"\nnombre cofrades:"+rs.getString(13)+"\napellidos: "+rs.getString(14)+"\ntelefono: "+rs.getString(15)+"\nnedad "+rs.getString(16)+"}\n");
                 documento.add(temp3);
                 documento.add(new Paragraph("\n_________________________________________________\n"));
             }

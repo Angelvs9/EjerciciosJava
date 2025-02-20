@@ -67,11 +67,18 @@ public class RepasoFinalAD {
         
         
         System.out.println("CREADAS COFRADIAS");
+   
+        Cofrades cofrade1 = new Cofrades(codigoCofradia1, "Juan", "Perez", "123456789", 30);
+        Cofrades cofrade2 = new Cofrades(codigoCofradia2, "Ana", "Lopez", "987654321", 28);
         
-        Cofrades cofrade1 = new Cofrades(1, codigoCofradia1, "Juan", "Perez", "123456789", 30);
-        Cofrades cofrade2 = new Cofrades(2, codigoCofradia2, "Ana", "Lopez", "987654321", 28);
+        //estos sin ponerle el codigo de la cofradia
+        Cofrades cofrade3 = new Cofrades("Juancho", "garcia", "647156789", 30);
+        Cofrades cofrade4 = new Cofrades("esperanza", "muñoz", "987254451", 28);
+        
         int crearCofrades1 =crearCofrades(conexion.getConexion(),cofrade1);
-        int crearCofrades2 = crearCofrades(conexion.getConexion(),cofrade2);
+        int crearCofrades2 =crearCofrades(conexion.getConexion(),cofrade2);
+        int crearCofrades3 =crearCofrades(conexion.getConexion(),cofrade3);
+        int crearCofrades4 =crearCofrades(conexion.getConexion(),cofrade4);
         
         System.out.println("CREADAS COFRADES");
         hacerPDF(conexion.getConexion());

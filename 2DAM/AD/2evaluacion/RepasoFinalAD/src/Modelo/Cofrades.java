@@ -12,15 +12,6 @@ public class Cofrades {
     private String ctelefono;
     private int nedad;
 
-    public Cofrades(int ncodigo, int ncofradia, String cnombre, String capellidos, String ctelefono, int nedad) {
-        this.ncodigo = ncodigo;
-        this.ncofradia = ncofradia;
-        this.cnombre = cnombre;
-        this.capellidos = capellidos;
-        this.ctelefono = ctelefono;
-        this.nedad = nedad;
-    }
-
     public Cofrades(int ncofradia, String cnombre, String capellidos, String ctelefono, int nedad) {
         this.ncofradia = ncofradia;
         this.cnombre = cnombre;
@@ -28,6 +19,17 @@ public class Cofrades {
         this.ctelefono = ctelefono;
         this.nedad = nedad;
     }
+
+    public Cofrades(String cnombre, String capellidos, String ctelefono, int nedad) {
+        ncofradia=0;
+        this.cnombre = cnombre;
+        this.capellidos = capellidos;
+        this.ctelefono = ctelefono;
+        this.nedad = nedad;
+    }
+    
+    
+    
 
     public int getNcodigo() {
         return ncodigo;

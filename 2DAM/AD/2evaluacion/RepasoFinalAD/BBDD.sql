@@ -8,7 +8,8 @@
 -- Versión de PHP: 7.2.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
+-- cambiado el autocommit de 0 a 1
+SET AUTOCOMMIT = 1;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
