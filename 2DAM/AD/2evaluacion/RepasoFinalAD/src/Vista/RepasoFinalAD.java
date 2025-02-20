@@ -2,6 +2,7 @@ package Vista;
 
 import static BBDD.Metodos.*;
 import BBDD.gestorConexion;
+import Modelo.Cofrades;
 import Modelo.Cofradia;
 import Modelo.Parroquia;
 import java.io.File;
@@ -38,7 +39,7 @@ public class RepasoFinalAD {
         String bd="juntisima";
         //así solo lo uso una vez y no tengo que llamarlo dentro de cada metodo
         
-        //crearBD(conexion.getConexion(), "BBDD.sql");
+        crearBD(conexion.getConexion(), "BBDD.sql");
         
         conexion.use(bd);
         Parroquia parroquia1 = new Parroquia(1, "Parroquia San José", "Calle Falsa 123", "Padre Juan");
@@ -67,6 +68,12 @@ public class RepasoFinalAD {
         
         System.out.println("CREADAS COFRADIAS");
         
+        Cofrades cofrade1 = new Cofrades(1, codigoCofradia1, "Juan", "Perez", "123456789", 30);
+        Cofrades cofrade2 = new Cofrades(2, codigoCofradia2, "Ana", "Lopez", "987654321", 28);
+        int crearCofrades1 =crearCofrades(conexion.getConexion(),cofrade1);
+        int crearCofrades2 = crearCofrades(conexion.getConexion(),cofrade2);
+        
+        System.out.println("CREADAS COFRADES");
         hacerPDF(conexion.getConexion());
         System.out.println("PDF HECHO");
         

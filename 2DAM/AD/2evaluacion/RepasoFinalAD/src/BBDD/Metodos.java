@@ -106,6 +106,7 @@ public class Metodos {
         String insert="insert into cofrades (ncofradia,cnombre,capellidos,ctelefono,nedad) values (?,?,?,?,?);";
         try {
             PreparedStatement psta=conexion.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
+            psta.setInt(1, cofrade.getNcodigo());
             psta.setString(2, cofrade.getCnombre());
             psta.setString(3, cofrade.getCapellidos());
             psta.setString(4, cofrade.getCtelefono());
@@ -169,5 +170,13 @@ public class Metodos {
         
 
     }
+    
+    public static void hacerCSV(Connection conexion){
+        String consulta="select";
+    
+    }
+    
+    
+    
     
 }
