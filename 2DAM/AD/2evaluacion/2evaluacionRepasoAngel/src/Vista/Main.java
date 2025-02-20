@@ -12,6 +12,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,11 +45,64 @@ public class Main {
         return foto;
     }
     
+    public static String imprimir(Connection conexion){
+        String temp="";
+        String Select="select canales.ncodigo as codigoCanal,"
+                + "canales.cnombre as nombreCanal, "
+                + "canales.nprecio as precioCanal,"
+                + "canales.nseries as numeroSeries,"
+                + "series.ncodigo as codigoSerie,"
+                + "series.ctitulo as tituloSerie,"
+                + "series.cgenero as generoSerie,"
+                + "series.nanyo as añoSerie,"
+                + "series.ncanal as numeroCanal,"
+                + "series.cfoto as nombreFoto,"
+                + "protagonistas.ncodigo as codigoProta,"
+                + "protagonistas.cnombre as nombreProta,"
+                + "protagonistas.nedad as edadProta,"
+                + "protagonistas.nserie as serieProta,"
+                + "protagonistas.ccurriculum as cvProta"
+                + " from series "
+                + "left join canales on canales.ncodigo=series.ncanal "
+                + "left join protagonistas on protagonistas.nserie=series.ncodigo";
+        
+        try {
+            PreparedStatement psta=conexion.prepareStatement(Select);
+            ResultSet rs=psta.executeQuery();
+            while(rs.next()){
+                temp += "Canal: Código Canal: " + rs.getInt("codigoCanal") + " | ";
+                temp += "Nombre Canal: " + rs.getString("nombreCanal") + " | ";
+                temp += "Precio Canal: " + rs.getDouble("precioCanal") + " | ";
+                temp += "Número de Series: " + rs.getInt("numeroSeries") + " | \n";
+
+                temp+="\t";
+                temp += "Serie " + rs.getInt("codigoSerie") + ": Código Serie: " + rs.getInt("codigoSerie") + " | ";
+                temp += "Título: " + rs.getString("tituloSerie") + " | ";
+                temp += "Género: " + rs.getString("generoSerie") + " | ";
+                temp += "Año: " + rs.getInt("añoSerie") + " | \n";
+
+                temp+="\t\t";
+                temp += "Protagonistas: Código: " + rs.getInt("codigoProta") + " | ";
+                temp += "Nombre: " + rs.getString("nombreProta") + " | ";
+                temp += "Edad: " + rs.getInt("edadProta") + " | ";
+                temp += "Curriculum: " + rs.getString("cvProta") + " | ";
+
+                temp += "\n\n";
+            
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return temp;
+    }
+    
+    
     
     public static void main(String[] args) {
         gestorConexion gestor=new gestorConexion();
         Connection conexion=gestor.getConexion();
-        crearBD(conexion, "BBDD.sql");
+        //crearBD(conexion, "BBDD.sql");
         use(conexion);
         
         Canal canal1=new Canal("hbo",20,15);
@@ -78,6 +134,8 @@ public class Main {
         crearProtagonista(conexion,mat);
         crearProtagonista(conexion,will);
         
+        
+        System.out.println(imprimir(conexion));
     }
     
 }
