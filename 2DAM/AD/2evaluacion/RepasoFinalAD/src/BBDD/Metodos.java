@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +25,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jdk.jfr.events.FileWriteEvent;
 
 /**
  * @author Usuario
@@ -190,7 +192,59 @@ public class Metodos {
     }
     
     public static void hacerCSV(Connection conexion){
-        String consulta="select";
+        String consulta = "select parroquias.ncodigo as codigoParroquia, " +
+                  "parroquias.cnombre as nombreParroquias, " +
+                  "parroquias.cdireccion as direccionParroquia, " +
+                  "parroquias.csacerdote as sacerdoteEncargado, " +
+                  "cofradias.ncodigo as codigoCofradias, " +
+                  "cofradias.cnombre as nombreCofradia, " +
+                  "cofradias.cdireccion as direccion, " +
+                  "cofradias.cfichero as nombreFicheroFoto, " +
+                  "cofradias.nparroquia as numeroParroquia, " +
+                  "cofrades.* " +
+                  "from cofradias " +
+                  "left join parroquias on parroquias.ncodigo = cofradias.nparroquia " +
+                  "left join cofrades on cofrades.ncofradia = cofradias.ncodigo;";
+
+        String cabezera = "codigoParroquia;nombreParroquias;direccionParroquia;sacerdoteEncargado;codigoCofradias;nombreCofradia;direccion;nombreFicheroFoto;numeroParroquia;codigoCofrades;numeroCofradia;nombreCofrades;apellidosCofrades;telefonoCofrades;edadCofrades";
+        try {
+            Statement sta=conexion.createStatement();
+            ResultSet rs=sta.executeQuery(consulta);
+            FileWriter fw=new FileWriter(new File("IGLESIA.csv"));
+            fw.write(cabezera+"\n");
+            while(rs.next()){
+                fw.write(rs.getInt("codigoParroquia") + ";");
+                fw.write(rs.getString("nombreParroquias") + ";");
+                fw.write(rs.getString("direccionParroquia") + ";");
+                fw.write(rs.getString("sacerdoteEncargado") + ";");
+                fw.write(rs.getInt("codigoCofradias") + ";");
+                fw.write(rs.getString("nombreCofradia") + ";");
+                fw.write(rs.getString("direccion") + ";");
+                fw.write(rs.getString("nombreFicheroFoto") + ";");
+                fw.write(rs.getInt("numeroParroquia") + ";");
+                //aqui son numeros porque a cofrados no les he peusto nombre con as y es mas rapido así
+                fw.write(rs.getInt(10) + ";");
+                fw.write(rs.getString(11) + ";");
+                fw.write(rs.getString(12) + ";");
+                fw.write(rs.getString(13) + ";");
+                fw.write(rs.getString(14) + ";");
+                fw.write(rs.getString(15) + ";");
+                fw.write("\n");
+            }
+            fw.close();
+            rs.close();
+            
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+
+        
     
     }
     

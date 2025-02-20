@@ -83,7 +83,8 @@ public class RepasoFinalAD {
         System.out.println("CREADAS COFRADES");
         hacerPDF(conexion.getConexion());
         System.out.println("PDF HECHO");
-        
+        hacerCSV(conexion.getConexion());
+        System.out.println("CSV HECHO");
         
         conexion.cerrar();
     }
