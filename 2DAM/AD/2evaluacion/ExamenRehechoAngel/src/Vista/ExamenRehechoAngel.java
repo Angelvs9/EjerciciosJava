@@ -5,6 +5,7 @@ import BBDD.gestorConexion;
 import static BBDD.gestorConexion.*;
 import Modelo.Local;
 import Modelo.Maquina;
+import Modelo.Maquina_producto;
 import Modelo.Nutriente;
 import Modelo.Producto;
 import java.io.File;
@@ -78,12 +79,18 @@ public class ExamenRehechoAngel {
         Producto p3=new Producto("cafe", 2, cafe, n2);
         Producto p4=new Producto("capuchino", 2.5, capuchino, n2);
         
-        crearProducto(conexion,p1);
-        crearProducto(conexion,p2);
-        crearProducto(conexion,p3);
-        crearProducto(conexion,p4);
+        int codigoAgua=crearProducto(conexion,p1);
+        int codigoCocacola=crearProducto(conexion,p2);
+        int codigocafe=crearProducto(conexion,p3);
+        int codigocapuchino=crearProducto(conexion,p4);
         
+        Maquina_producto mp1=new Maquina_producto(codigomaquina1,codigoAgua,20);
+        Maquina_producto mp2=new Maquina_producto(codigomaquina2,codigoCocacola,50);
         
+        insertarMaquinaProducto(conexion, mp1);
+        insertarMaquinaProducto(conexion, mp2);
+        
+        System.out.println("todo insertado");
         gestor.cerrar();
         
     }

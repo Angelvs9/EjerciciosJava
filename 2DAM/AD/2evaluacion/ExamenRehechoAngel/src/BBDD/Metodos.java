@@ -7,6 +7,7 @@ package BBDD;
 
 import Modelo.Local;
 import Modelo.Maquina;
+import Modelo.Maquina_producto;
 import Modelo.Producto;
 import com.mysql.cj.PreparedQuery;
 import java.io.BufferedReader;
@@ -133,5 +134,17 @@ public class Metodos {
         return codigo;
     }
     
-    
+    public static void insertarMaquinaProducto(Connection conexion,Maquina_producto mp){
+        try {
+            String insert="insert into maquina_producto (nmaquina,nproducto,ncantidad) values (?,?,?);";
+            PreparedStatement psta=conexion.prepareStatement(insert);
+            psta.setInt(1, mp.getNmaquina());
+            psta.setInt(2, mp.getNproducto());
+            psta.setInt(3, mp.getNcantidad());
+            psta.executeUpdate();
+            psta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
