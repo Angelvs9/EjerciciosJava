@@ -109,14 +109,21 @@ public class Metodos {
         int codigo=-1;
         String insert="insert into productos (cnombre,nprecio,bfoto,bnutrientes) values (?,?,?,?);";
         try {
-            PreparedStatement psta=conexion.prepareStatement(insert);
+            PreparedStatement psta=conexion.prepareStatement(insert,Statement.RETURN_GENERATED_KEYS);
             psta.setString(1, p.getCnombre());
             psta.setDouble(2, p.getNprecio());
             //foto
             psta.setBytes(3, p.getBfoto());
             //objeto
-            
-            
+            psta.setObject(4, p.getBnutrientes());
+               
+            psta.executeUpdate();
+            ResultSet rs=psta.getGeneratedKeys();
+            if (rs.next()) {
+                codigo=rs.getInt(1);
+            }
+            rs.close();
+            psta.close();
         } catch (SQLException ex) {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }

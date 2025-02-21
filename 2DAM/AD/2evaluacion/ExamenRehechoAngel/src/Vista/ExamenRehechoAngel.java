@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,12 +36,16 @@ public class ExamenRehechoAngel {
         return foto;
     }
     
+    public static void serializar(Connection conexion,Nutriente o){
+        
+    }
+    
     
     
     public static void main(String[] args) {
         gestorConexion gestor=new gestorConexion();
         Connection conexion=gestor.getConexion();
-        //crearBD(conexion,"vending.sql");
+        crearBD(conexion,"vending.sql");
         use(conexion);
         
         
@@ -73,7 +78,10 @@ public class ExamenRehechoAngel {
         Producto p3=new Producto("cafe", 2, cafe, n2);
         Producto p4=new Producto("capuchino", 2.5, capuchino, n2);
         
-        
+        crearProducto(conexion,p1);
+        crearProducto(conexion,p2);
+        crearProducto(conexion,p3);
+        crearProducto(conexion,p4);
         
         
         gestor.cerrar();
