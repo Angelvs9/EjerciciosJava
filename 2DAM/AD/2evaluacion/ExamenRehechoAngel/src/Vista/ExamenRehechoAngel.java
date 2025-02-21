@@ -11,9 +11,14 @@ import Modelo.Producto;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,8 +42,31 @@ public class ExamenRehechoAngel {
         return foto;
     }
     
-    public static void serializar(Connection conexion,Nutriente o){
-        
+    public static String reconstruirButrientes(Connection conexion,int codigoProducto){
+        Object temp=null;
+        String resultado="";
+        String select="select bnutrientes from productos where ncodigo=?";
+        try {
+            PreparedStatement psta=conexion.prepareStatement(select);
+            psta.setInt(1, codigoProducto);
+            
+            ResultSet rs=psta.executeQuery();
+            while (rs.next()) {
+                Blob b=rs.getBlob(1);
+                ObjectInputStream ois=new ObjectInputStream(b.getBinaryStream());
+                temp=ois.readObject();
+                resultado=temp.toString();
+            }
+            rs.close();
+            psta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(ExamenRehechoAngel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ExamenRehechoAngel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ExamenRehechoAngel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
     }
     
     
@@ -91,6 +119,14 @@ public class ExamenRehechoAngel {
         insertarMaquinaProducto(conexion, mp2);
         
         System.out.println("todo insertado");
+        
+        vaciarMaquina(conexion,codigomaquina1);
+        System.out.println("vaciada la maquina 1");
+        
+        System.out.println(reconstruirButrientes(conexion,codigoCocacola));
+        //en vez de una foto de los simsons por rapidez le pongo la foto del capuchino al agua
+        cambiarFoto(conexion,capuchino,codigoAgua);
+        
         gestor.cerrar();
         
     }

@@ -10,7 +10,9 @@ import Modelo.Serie;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -72,20 +74,20 @@ public class Main {
             while(rs.next()){
                 temp += "Canal: Código Canal: " + rs.getInt("codigoCanal") + " | ";
                 temp += "Nombre Canal: " + rs.getString("nombreCanal") + " | ";
-                temp += "Precio Canal: " + rs.getDouble("precioCanal") + " | ";
-                temp += "Número de Series: " + rs.getInt("numeroSeries") + " | \n";
+                temp+="Precio Canal: " + rs.getDouble("precioCanal") + " | ";
+                temp+="Número de Series: " + rs.getInt("numeroSeries") + " | \n";
 
                 temp+="\t";
                 temp += "Serie " + rs.getInt("codigoSerie") + ": Código Serie: " + rs.getInt("codigoSerie") + " | ";
-                temp += "Título: " + rs.getString("tituloSerie") + " | ";
+                temp+="Título: " + rs.getString("tituloSerie") + " | ";
                 temp += "Género: " + rs.getString("generoSerie") + " | ";
                 temp += "Año: " + rs.getInt("añoSerie") + " | \n";
 
                 temp+="\t\t";
-                temp += "Protagonistas: Código: " + rs.getInt("codigoProta") + " | ";
-                temp += "Nombre: " + rs.getString("nombreProta") + " | ";
-                temp += "Edad: " + rs.getInt("edadProta") + " | ";
-                temp += "Curriculum: " + rs.getString("cvProta") + " | ";
+                temp+= "Protagonistas: Código: " + rs.getInt("codigoProta") + " | ";
+                temp +="Nombre: " + rs.getString("nombreProta") + " | ";
+                temp+="Edad: " + rs.getInt("edadProta") + " | ";
+                temp+= "Curriculum: " + rs.getString("cvProta") + " | ";
 
                 temp += "\n\n";
             
@@ -97,6 +99,31 @@ public class Main {
         return temp;
     }
     
+    public static void crearFichero(Connection conexion ,int idSerie){
+        File f=new File("resultado.jpg");
+        
+        try {
+            FileOutputStream fos=new FileOutputStream(f);
+            String select="select bfoto from series where ncodigo=?";
+            PreparedStatement psta=conexion.prepareStatement(select);
+            psta.setInt(1, idSerie);
+            ResultSet rs=psta.executeQuery();
+            while (rs.next()) {                
+                Blob b=rs.getBlob(1);
+                byte[] byteArray=b.getBytes(1, (int)b.length());
+                fos.write(byteArray);
+            }
+            rs.close();
+            fos.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     
     
     public static void main(String[] args) {
@@ -136,6 +163,10 @@ public class Main {
         
         
         System.out.println(imprimir(conexion));
+        
+        
+        crearFichero(conexion,drwho.getNcodigo());
+        
     }
     
 }

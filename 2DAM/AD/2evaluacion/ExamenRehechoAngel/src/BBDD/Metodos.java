@@ -147,4 +147,33 @@ public class Metodos {
             Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    public static void vaciarMaquina(Connection conexion,int cod){
+        String vaciar="DELETE FROM maquina_producto WHERE nmaquina=?;";
+        try {
+            //String vaciar="UPDATE maquina_producto ncantidad=0 WHERE nmaquina=?;";
+            PreparedStatement psta=conexion.prepareStatement(vaciar);
+            psta.setInt(1, cod);
+            psta.executeUpdate();
+            psta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+    public static void cambiarFoto(Connection conexion,byte [] foto,int producto){
+        try {
+            String update="UPDATE productos SET bfoto=? WHERE ncodigo=?;";
+            PreparedStatement psta=conexion.prepareStatement(update);
+            psta.setBytes(1, foto);
+            psta.setInt(2, producto);
+            psta.executeUpdate();
+            psta.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 }
