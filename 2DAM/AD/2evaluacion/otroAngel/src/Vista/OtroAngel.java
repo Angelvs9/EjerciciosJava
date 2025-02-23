@@ -5,8 +5,10 @@
  */
 package Vista;
 
+import BBDD.Metodos;
 import static BBDD.Metodos.crearPersona;
 import static BBDD.Metodos.crearViaje;
+import static BBDD.Metodos.desSerializar;
 import BBDD.gestorConexion;
 import Modelo.Persona;
 import Modelo.Tren;
@@ -41,6 +43,10 @@ public class OtroAngel {
         
         return vector;        
     }
+    
+
+    
+    
     public static void main(String[] args) {
         gestorConexion conexion=new gestorConexion();
         conexion.use("renfe");
@@ -75,6 +81,8 @@ public class OtroAngel {
         int codigoPersona3=crearPersona(conexion.getConexion(),p3);
         
         
+        
+        System.out.println(desSerializar(conexion.getConexion(), codigoViaje3));
         
         conexion.cerrar();
     }

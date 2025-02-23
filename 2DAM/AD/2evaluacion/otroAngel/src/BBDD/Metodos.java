@@ -2,7 +2,12 @@
 package BBDD;
 
 import Modelo.Persona;
+import Modelo.Tren;
 import Modelo.Viaje;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,6 +72,29 @@ public class Metodos {
         return codigo;
     }
     
-    
+    public static String desSerializar(Connection conexion,int codigoViaje){
+        String select="select tren from viajes where id=?";
+        String temp="";
+        try {
+            Object dato=null;
+            PreparedStatement psta=conexion.prepareStatement(select);
+            psta.setInt(1, codigoViaje);
+            ResultSet rs=psta.executeQuery();
+            while(rs.next()){
+                Blob b=rs.getBlob(1);
+                ObjectInputStream ois=new ObjectInputStream(b.getBinaryStream());
+                dato=ois.readObject();
+                temp=dato.toString();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return temp;
+    }
     
 }
