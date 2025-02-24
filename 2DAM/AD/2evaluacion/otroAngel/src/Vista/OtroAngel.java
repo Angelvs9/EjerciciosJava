@@ -27,7 +27,7 @@ import java.util.logging.Logger;
  */
 public class OtroAngel {
 
-    public static byte[] fileBytes(Connection conexion,String foto){
+    public static byte[] fileBytes(String foto){
         File f=new File(foto);
         byte [] vector=new byte[(int)f.length()];
         try {
@@ -67,9 +67,9 @@ public class OtroAngel {
         ///////////////////////////////////////////////////////////////
         
         
-        byte [] pep=fileBytes(conexion.getConexion(),"pep.jpg");
-        byte [] jusep=fileBytes(conexion.getConexion(),"jusep.jpg");
-        byte [] fabri=fileBytes(conexion.getConexion(),"fabri.jpg");
+        byte [] pep=fileBytes("pep.jpg");
+        byte [] jusep=fileBytes("jusep.jpg");
+        byte [] fabri=fileBytes("fabri.jpg");
         
         //creo personas
         Persona p1=new Persona("245178548K", "pep", "pep", codigoViaje1, pep);
@@ -81,8 +81,7 @@ public class OtroAngel {
         int codigoPersona3=crearPersona(conexion.getConexion(),p3);
         
         
-        
-        System.out.println(desSerializar(conexion.getConexion(), codigoViaje3));
+        System.out.println(desSerializar(conexion.getConexion(), codigoViaje1));
         
         conexion.cerrar();
     }

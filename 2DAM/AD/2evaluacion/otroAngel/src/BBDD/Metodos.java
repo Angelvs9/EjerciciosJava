@@ -83,6 +83,7 @@ public class Metodos {
             while(rs.next()){
                 Blob b=rs.getBlob(1);
                 ObjectInputStream ois=new ObjectInputStream(b.getBinaryStream());
+                
                 dato=ois.readObject();
                 temp=dato.toString();
             }
