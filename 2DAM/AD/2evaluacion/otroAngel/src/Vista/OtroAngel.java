@@ -16,7 +16,9 @@ import Modelo.Viaje;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +46,22 @@ public class OtroAngel {
         return vector;        
     }
     
+    public static void serializarObjeto(Connection c,Object o){
+        File f=new File("resutlado.dat");
+        try {
+            ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(f));
+            oos.writeObject(o);
+            oos.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(OtroAngel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OtroAngel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
 
+    
+    
     
     
     public static void main(String[] args) {
@@ -82,7 +99,7 @@ public class OtroAngel {
         
         
         System.out.println(desSerializar(conexion.getConexion(), codigoViaje1));
-        
+        serializarObjeto(conexion.getConexion(),tren1);
         conexion.cerrar();
     }
     
